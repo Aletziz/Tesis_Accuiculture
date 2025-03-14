@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galería - Tesis de Acuicultura</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="galeria.html">Galería</a></li>
+          <li><a href="metodologia.html">Metodología</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="content-box">
+        <h1>Galería de Imágenes</h1>
+
+        <div class="gallery">
+          <div class="gallery-item">
+            <img
+              src="https://images.unsplash.com/photo-1534043464124-3be32fe000c9"
+              alt="Sistema RAS"
+            />
+            <div class="gallery-caption">
+              Sistema de Recirculación Acuícola (RAS)
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.unsplash.com/photo-1513040260736-63dd0617fb66"
+              alt="Cultivo de peces"
+            />
+            <div class="gallery-caption">Cultivo de Especies Marinas</div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.unsplash.com/photo-1544551763-46a013bb70d5"
+              alt="Monitoreo de agua"
+            />
+            <div class="gallery-caption">Monitoreo de Calidad del Agua</div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.unsplash.com/photo-1527100673774-cce25eafaf7f"
+              alt="Laboratorio"
+            />
+            <div class="gallery-caption">Análisis de Laboratorio</div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.unsplash.com/photo-1563432057-42a548e7c33b"
+              alt="Biofiltros"
+            />
+            <div class="gallery-caption">Sistemas de Biofiltración</div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.unsplash.com/photo-1518709766631-a6a7f45921c3"
+              alt="Investigación"
+            />
+            <div class="gallery-caption">Investigación y Desarrollo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const navToggle = document.getElementById("navToggle");
+      const navMenu = document.getElementById("navMenu");
+
+      navToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>
