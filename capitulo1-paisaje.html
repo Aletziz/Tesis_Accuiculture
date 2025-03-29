@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paisaje - Capítulo 1</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="galeria.html">Galería</a></li>
+          <li><a href="metodologia.html">Metodología</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="content-box">
+        <a href="capitulo1.html" class="back-link">← Volver a Generalidades</a>
+
+        <h1>Paisaje</h1>
+
+        <div class="chapter-text">
+          <p>
+            El paisaje geográfico se concibe como el sistema territorial
+            compuesto por la asociación dialéctica de componentes formados bajo
+            la influencia de los procesos naturales y de la actividad
+            modificadora de la sociedad humana. Los paisajes sirven como
+            elementos de base para evaluar las condiciones, potenciales y
+            recursos naturales, así como en trabajos de optimización y
+            protección del medio ambiente. En Cuba los paisajes, a diferencia
+            del resto de las Antillas Mayores, se caracterizan por un amplio
+            predominio de las llanuras y de los paisajes desarrollados en rocas
+            carbonatadas y la preponderancia de las montañas bajas húmedas,
+            mientras que las montañas medias solo ocupan el 1% del territorio.
+            En las zonas terrestres se definen 23 paisajes de un total de 30
+            existentes en la isla. Los paisajes que más valores conservan se
+            encuentran restringidos principalmente a los de montañas medias, de
+            las llanuras pantanosas y las llanuras carsificadas, dado por las
+            limitantes para su uso económico y las condiciones paleogeográficas;
+            los paisajes de montañas y alturas y de algunas llanuras, con
+            relativa degradación de la cobertura y pérdida de valores de la
+            flora y la fauna, los que siguen siendo áreas de alta unicidad para
+            la conservación y por último los paisajes de llanuras intensamente
+            cultivadas, los que, a pesar de su prolongada e intensa asimilación
+            económica, guardan de manera local algunos valores florísticos y
+            faunísticos, para la conservación.
+          </p>
+        </div>
+
+        <div class="navigation-buttons">
+          <a href="capitulo1-caracteristicas.html" class="nav-button"
+            >← Sección Anterior</a
+          >
+          <a href="capitulo1-mitigacion.html" class="nav-button"
+            >Siguiente Sección →</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const navToggle = document.getElementById("navToggle");
+      const navMenu = document.getElementById("navMenu");
+      navToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>

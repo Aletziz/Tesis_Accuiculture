@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capítulo 2: Diversidad Biológica</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="galeria.html">Galería</a></li>
+          <li><a href="metodologia.html">Metodología</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="content-box">
+        <h1>Capítulo 2: Diversidad Biológica</h1>
+
+        <div class="sections-container">
+          <a href="diversidad-genetica.html" class="section-button">
+            <div class="section">
+              <h3>Diversidad Genética</h3>
+              <p>Análisis de la variabilidad genética en especies marinas</p>
+            </div>
+          </a>
+
+          <a href="diversidad-organismos.html" class="section-button">
+            <div class="section">
+              <h3>Diversidad de Organismos</h3>
+              <p>Estudio de la variedad de especies y sus características</p>
+            </div>
+          </a>
+
+          <a href="diversidad-ecosistemas.html" class="section-button">
+            <div class="section">
+              <h3>Diversidad de Ecosistemas</h3>
+              <p>Análisis de los diferentes hábitats marinos</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="navigation-buttons">
+          <a href="index.html" class="nav-button">← Inicio</a>
+          <a href="biodiversidad-marina.html" class="nav-button"
+            >Primera Sección →</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const navToggle = document.getElementById("navToggle");
+      const navMenu = document.getElementById("navMenu");
+      navToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>

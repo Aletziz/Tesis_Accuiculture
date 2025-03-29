@@ -1,45 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capítulo 1 - Tesis de Acuicultura</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container chapter-container">
-        <div class="content-box chapter-content">
-            <a href="index.html" class="back-link">← Volver al Índice</a>
-            
-            <h1>Capítulo 1: Introducción a los Sistemas de Acuicultura</h1>
-            
-            <div class="chapter-text">
-                <h2>1.1 Antecedentes</h2>
-                <p>La acuicultura moderna representa una solución sostenible para la creciente demanda mundial de proteínas. Este estudio se centra en el desarrollo y optimización de sistemas de producción acuícola intensiva, con énfasis en la sostenibilidad y la eficiencia productiva.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capítulo 1: Generalidades</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="galeria.html">Galería</a></li>
+          <li><a href="metodologia.html">Metodología</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
 
-                <h2>1.2 Planteamiento del Problema</h2>
-                <p>La necesidad de desarrollar sistemas de producción acuícola más eficientes y sostenibles se ha vuelto crítica ante los desafíos del cambio climático y la sobreexplotación de los recursos marinos naturales.</p>
+    <div class="container">
+      <div class="content-box">
+        <a href="index.html" class="back-link">← Volver al Índice</a>
 
-                <h2>1.3 Objetivos</h2>
-                <h3>1.3.1 Objetivo General</h3>
-                <p>Desarrollar y evaluar un sistema de acuicultura sostenible que optimice la producción mientras minimiza el impacto ambiental.</p>
+        <h1>Capítulo 1: Generalidades</h1>
 
-                <h3>1.3.2 Objetivos Específicos</h3>
-                <ul>
-                    <li>Diseñar un sistema de recirculación acuícola (RAS) adaptado a las condiciones locales</li>
-                    <li>Evaluar parámetros de calidad del agua y su impacto en el crecimiento de las especies</li>
-                    <li>Analizar la viabilidad económica del sistema propuesto</li>
-                </ul>
-
-                <h2>1.4 Justificación</h2>
-                <p>La implementación de sistemas acuícolas sostenibles es fundamental para garantizar la seguridad alimentaria y la conservación de los ecosistemas marinos. Esta investigación contribuye al desarrollo de soluciones prácticas y escalables.</p>
+        <div class="sections-container">
+          <a href="capitulo1-ecosistema.html" class="section-button">
+            <div class="section">
+              <h3>Ecosistema</h3>
+              <p>Conceptos fundamentales y componentes</p>
             </div>
+          </a>
 
-            <div class="navigation-buttons">
-                <a href="index.html" class="nav-button">← Índice</a>
-                <a href="capitulo2.html" class="nav-button">Capítulo 2 →</a>
+          <a href="capitulo1-caracteristicas.html" class="section-button">
+            <div class="section">
+              <h3>Características Físicas</h3>
+              <p>Aspectos geográficos y climáticos</p>
             </div>
+          </a>
+
+          <a href="capitulo1-paisaje.html" class="section-button">
+            <div class="section">
+              <h3>Paisaje</h3>
+              <p>Elementos y estructura del paisaje</p>
+            </div>
+          </a>
+
+          <a href="capitulo1-mitigacion.html" class="section-button">
+            <div class="section">
+              <h3>Mitigación</h3>
+              <p>Estrategias y acciones de mitigación</p>
+            </div>
+          </a>
+
+          <a href="capitulo1-normas.html" class="section-button">
+            <div class="section">
+              <h3>Normas Jurídicas</h3>
+              <p>Marco legal y regulaciones</p>
+            </div>
+          </a>
         </div>
+
+        <div class="navigation-buttons">
+          <a href="index.html" class="nav-button">← Volver al Índice</a>
+          <a href="capitulo2.html" class="nav-button">Siguiente Capítulo →</a>
+        </div>
+      </div>
     </div>
-</body>
+
+    <script>
+      const navToggle = document.getElementById("navToggle");
+      const navMenu = document.getElementById("navMenu");
+
+      navToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+      });
+    </script>
+  </body>
 </html>
