@@ -18,7 +18,9 @@ const __dirname = dirname(__filename);
 
 // Conectar a MongoDB si la URI está definida
 if (process.env.MONGODB_URI) {
-  connectDB();
+  connectDB().catch(err => {
+    console.error('Error connecting to MongoDB:', err);
+  });
 }
 
 const app = express();
@@ -91,14 +93,16 @@ app.get('/api/health', (req, res) => {
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Algo salió mal!' });
+  res.status(500).json({ 
+    error: 'Algo salió mal!',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Internal Server Error'
+  });
 });
 
-// Iniciar el servidor solo si no estamos en producción
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-  });
-}
+// Iniciar el servidor
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log('MongoDB connection state:', mongoose.connection.readyState === 1 ? 'connected' : 'disconnected');
+});
 
 export default app;
