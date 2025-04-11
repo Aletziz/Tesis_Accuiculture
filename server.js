@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 // Middleware para parsear JSON
 app.use(express.json({ limit: '50mb' }));
@@ -26,10 +26,9 @@ app.use((req, res, next) => {
 });
 
 // Servir archivos estáticos
-app.use(express.static('public'));
-app.use('/css', express.static(path.join(__dirname, 'public/css')));
-app.use('/js', express.static(path.join(__dirname, 'public/js')));
 app.use(express.static(path.join(__dirname, '.')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
 
 // Ruta principal
 app.get('/', (req, res) => {
@@ -41,16 +40,32 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-// Conectar a MongoDB solo si es necesario
+// Variable para rastrear el estado de la conexión MongoDB
+let mongoConnected = false;
+
+// Conectar a MongoDB
 if (process.env.MONGODB_URI) {
-  connectDB().catch(err => {
-    console.error('Error al conectar a MongoDB:', err);
-  });
+  console.log('Intentando conectar a MongoDB...');
+  connectDB()
+    .then((conn) => {
+      if (conn) {
+        mongoConnected = true;
+        console.log('MongoDB conectado exitosamente');
+      }
+    })
+    .catch((error) => {
+      console.error('Error al conectar a MongoDB:', error);
+      // No lanzar el error, permitir que la aplicación continúe sin MongoDB
+    });
 }
 
-// Ruta para verificar el estado del servidor
+// Ruta de health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', mongodb: mongoose.connection.readyState === 1 });
+  res.json({
+    status: 'ok',
+    mongodb: mongoConnected ? 'connected' : 'disconnected',
+    environment: process.env.NODE_ENV
+  });
 });
 
 // Ruta para obtener la lista de archivos
@@ -73,10 +88,15 @@ app.get('/api/file-content', async (req, res) => {
         }
 
         // Si MongoDB está conectado, intentar obtener el contenido desde ahí
-        if (process.env.MONGODB_URI && mongoose.connection.readyState === 1) {
-            let fileDoc = await File.findOne({ path: filePath });
-            if (fileDoc) {
-                return res.send(fileDoc.content);
+        if (mongoConnected) {
+            try {
+                let fileDoc = await File.findOne({ path: filePath });
+                if (fileDoc) {
+                    return res.send(fileDoc.content);
+                }
+            } catch (mongoError) {
+                console.error('Error al leer de MongoDB:', mongoError);
+                // Continuamos con el sistema de archivos si MongoDB falla
             }
         }
 
@@ -98,15 +118,20 @@ app.post('/api/save-file', async (req, res) => {
         }
 
         // Si MongoDB está conectado, guardar ahí
-        if (process.env.MONGODB_URI && mongoose.connection.readyState === 1) {
-            await File.findOneAndUpdate(
-                { path: filePath },
-                { 
-                    content: content,
-                    lastModified: Date.now()
-                },
-                { upsert: true, new: true }
-            );
+        if (mongoConnected) {
+            try {
+                await File.findOneAndUpdate(
+                    { path: filePath },
+                    { 
+                        content: content,
+                        lastModified: Date.now()
+                    },
+                    { upsert: true, new: true }
+                );
+            } catch (mongoError) {
+                console.error('Error al guardar en MongoDB:', mongoError);
+                // Continuamos con el sistema de archivos si MongoDB falla
+            }
         }
 
         // También guardar en el sistema de archivos
@@ -127,10 +152,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Solo iniciar el servidor si no estamos en Vercel
+// Iniciar el servidor solo si no estamos en Vercel
 if (process.env.NODE_ENV !== 'production') {
   app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
+    console.log(`Entorno: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`MongoDB conectado: ${mongoConnected ? 'Sí' : 'No'}`);
   });
 }
 
