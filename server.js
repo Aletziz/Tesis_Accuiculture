@@ -1,14 +1,23 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
+const connectDB = require('./db');
+const File = require('./models/File');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Conectar a MongoDB
+connectDB();
+
 // Middleware para parsear JSON
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Servir archivos estáticos
-app.use(express.static('.'));
+app.use(express.static(path.join(__dirname, '.')));
+
+// Servir archivos CSS específicamente
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
 
 // Ruta principal
 app.get('/', (req, res) => {
@@ -34,8 +43,17 @@ app.get('/api/file-content', async (req, res) => {
             return res.status(400).json({ error: 'Ruta de archivo no proporcionada' });
         }
 
-        const content = await fs.readFile(filePath, 'utf8');
-        res.send(content);
+        // Primero, intentar obtener el contenido desde MongoDB
+        let fileDoc = await File.findOne({ path: filePath });
+        
+        if (fileDoc) {
+            // Si existe en MongoDB, devolver ese contenido
+            res.send(fileDoc.content);
+        } else {
+            // Si no existe en MongoDB, leer del sistema de archivos
+            const content = await fs.readFile(filePath, 'utf8');
+            res.send(content);
+        }
     } catch (error) {
         console.error('Error al leer archivo:', error);
         res.status(500).json({ error: 'Error al leer archivo' });
@@ -50,7 +68,16 @@ app.post('/api/save-file', async (req, res) => {
             return res.status(400).json({ error: 'Ruta de archivo o contenido no proporcionado' });
         }
 
-        await fs.writeFile(filePath, content, 'utf8');
+        // Guardar en MongoDB en lugar de en el sistema de archivos
+        await File.findOneAndUpdate(
+            { path: filePath },
+            { 
+                content: content,
+                lastModified: Date.now()
+            },
+            { upsert: true, new: true }
+        );
+
         res.json({ success: true });
     } catch (error) {
         console.error('Error al guardar archivo:', error);

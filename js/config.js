@@ -1,0 +1,2 @@
+export const SUPABASE_URL = 'https://nanazxpeaxjsydnnptev.supabase.co'
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hbmF6eHBlYXhqc3lkbm5wdGV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMTQ2MjcsImV4cCI6MjA1OTc5MDYyN30.8PGx25ctl-TSVobLOf6n10Q1xcbPia4p9u9VpiV6Gc0'
