@@ -28,11 +28,9 @@ body {
 }
 
 /* Navbar styles */
-/* Eliminar las segundas definiciones del navbar (desde línea ~150 hasta ~220) y mantener solo estas: */
-
 .navbar {
   background-color: var(--primary-color);
-  padding: 1.2rem;
+  padding: 1rem;
   position: fixed;
   width: 100%;
   top: 0;
@@ -46,11 +44,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 1rem;
 }
 
 .nav-logo {
   color: var(--text-light) !important;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: bold;
   text-decoration: none;
   letter-spacing: 0.5px;
@@ -61,12 +60,12 @@ body {
   opacity: 0.9;
 }
 
-/* El resto del CSS se mantiene igual */
 .nav-menu {
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
+  align-items: center;
 }
 
 .nav-menu li {
@@ -76,9 +75,11 @@ body {
 .nav-menu a {
   color: var(--text-light) !important;
   text-decoration: none;
-  font-weight: 400;
+  font-weight: 500;
+  font-size: 1rem;
   position: relative;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 0.5rem 0;
 }
 
 .nav-menu a::after {
@@ -86,7 +87,7 @@ body {
   position: absolute;
   width: 0;
   height: 2px;
-  bottom: -5px;
+  bottom: 0;
   left: 0;
   background-color: var(--text-light);
   transition: width 0.3s ease;
@@ -103,96 +104,75 @@ body {
   color: var(--text-light);
   font-size: 1.5rem;
   cursor: pointer;
+  padding: 0.5rem;
 }
 
+/* Estilos para dispositivos móviles */
 @media (max-width: 768px) {
-  .nav-menu {
-    background-color: var(--primary-color);
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    padding: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  .navbar {
+    padding: 0.8rem;
   }
 
-  .nav-menu.active {
-    display: block;
+  .nav-container {
+    padding: 0 0.5rem;
   }
 
-  .nav-menu li {
-    margin: 1rem 0;
-  }
-
-  .nav-menu a {
-    color: var(--text-light);
-    display: block;
-    padding: 0.5rem 0;
+  .nav-logo {
+    font-size: 1.2rem;
   }
 
   .nav-toggle {
     display: block;
   }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--primary-color);
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-menu li {
+    margin: 0;
+    width: 100%;
+  }
+
+  .nav-menu a {
+    display: block;
+    padding: 0.8rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-menu a::after {
+    display: none;
+  }
+
+  .nav-menu a:hover {
+    background-color: var(--primary-light);
+  }
 }
 
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .nav-logo {
+    font-size: 1.1rem;
+  }
 
-.nav-logo {
-  color: #004466;
-  font-size: 1.6rem;
-  font-weight: bold;
-  text-decoration: none;
-  letter-spacing: 0.5px;
-}
-
-.nav-menu {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-menu li {
-  margin-left: 2rem;
-}
-
-.nav-menu a {
-  color: #004466;
-  text-decoration: none;
-  font-weight: 400;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-.nav-menu a::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -5px;
-  left: 0;
-  background-color: #004466;
-  transition: width 0.3s ease;
-}
-
-.nav-menu a:hover::after {
-  width: 100%;
-}
-
-.nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: #004466;
-  font-size: 1.5rem;
-  cursor: pointer;
+  .nav-menu a {
+    font-size: 1rem;
+    padding: 0.7rem 0;
+  }
 }
 
 .container {
