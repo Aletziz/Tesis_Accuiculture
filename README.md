@@ -1,6 +1,84 @@
 # Tesis Editor
 
-Sistema de edición de texto para tesis con soporte para MongoDB y Supabase.
+Sistema de edición de texto para tesis de acuicultura.
+
+## Configuración para Vercel
+
+### Requisitos previos
+
+1. Tener una cuenta en [Vercel](https://vercel.com)
+2. Tener una base de datos MongoDB (recomendado [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
+
+### Pasos para el despliegue
+
+1. **Configurar variables de entorno en Vercel**
+
+   - Ve a la configuración de tu proyecto en Vercel
+   - En la sección "Environment Variables", agrega las siguientes variables:
+     - `MONGODB_URI`: URL de conexión a tu base de datos MongoDB
+     - `NEXT_PUBLIC_SUPABASE_URL`: URL de tu proyecto Supabase
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Clave anónima de tu proyecto Supabase
+     - `JWT_SECRET`: Clave secreta para JWT
+     - `NODE_ENV`: Establece como "production"
+
+2. **Desplegar la aplicación**
+
+   - Conecta tu repositorio de GitHub a Vercel
+   - Selecciona el repositorio y la rama a desplegar
+   - Configura el proyecto con las siguientes opciones:
+     - Framework Preset: Other
+     - Build Command: `npm run vercel-build`
+     - Output Directory: `.`
+     - Install Command: `npm install`
+
+3. **Verificar el despliegue**
+
+   - Después del despliegue, visita las siguientes rutas para verificar el estado:
+     - `/api/hello`: Debería mostrar un mensaje simple
+     - `/api/health`: Debería mostrar el estado del servidor
+     - `/api/mongodb`: Debería mostrar el estado de la conexión a MongoDB
+
+### Solución de problemas
+
+Si encuentras errores durante el despliegue:
+
+1. **Error de conexión a MongoDB**
+   - Verifica que la URI de MongoDB sea correcta
+   - Asegúrate de que tu base de datos MongoDB permita conexiones desde Vercel
+   - Si usas MongoDB Atlas, agrega la IP de Vercel a la lista blanca
+
+2. **Error de función serverless**
+   - Verifica los logs de Vercel para identificar el error específico
+   - Asegúrate de que todas las dependencias estén correctamente instaladas
+   - Verifica que la estructura de archivos sea compatible con Vercel
+
+3. **Error de archivos estáticos**
+   - Verifica que las rutas en vercel.json sean correctas
+   - Asegúrate de que los archivos estáticos estén en las ubicaciones correctas
+
+## Desarrollo local
+
+Para ejecutar la aplicación localmente:
+
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run dev
+
+# Ejecutar en modo local
+npm run local
+```
+
+## Estructura del proyecto
+
+- `api/`: Funciones serverless para Vercel
+- `css/`: Archivos CSS
+- `js/`: Archivos JavaScript
+- `models/`: Modelos de datos para MongoDB
+- `server.js`: Servidor Express para desarrollo local
+- `vercel.json`: Configuración para Vercel
 
 ## Características
 
@@ -41,34 +119,6 @@ NODE_ENV=development
 4. Inicia el servidor:
 ```bash
 npm run local
-```
-
-## Despliegue en Vercel
-
-1. Crea una cuenta en [Vercel](https://vercel.com) si no tienes una.
-
-2. Instala el CLI de Vercel:
-```bash
-npm install -g vercel
-```
-
-3. Inicia sesión en Vercel:
-```bash
-vercel login
-```
-
-4. Configura las variables de entorno en Vercel:
-```bash
-vercel env add MONGODB_URI
-vercel env add NEXT_PUBLIC_SUPABASE_URL
-vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY
-vercel env add JWT_SECRET
-vercel env add NODE_ENV
-```
-
-5. Despliega el proyecto:
-```bash
-vercel --prod
 ```
 
 ## Estructura del proyecto
