@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import connectDB from './db.js';
 import File from './models/File.js';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -42,8 +43,15 @@ app.get('/login', (req, res) => {
 
 // Conectar a MongoDB solo si es necesario
 if (process.env.MONGODB_URI) {
-  connectDB();
+  connectDB().catch(err => {
+    console.error('Error al conectar a MongoDB:', err);
+  });
 }
+
+// Ruta para verificar el estado del servidor
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', mongodb: mongoose.connection.readyState === 1 });
+});
 
 // Ruta para obtener la lista de archivos
 app.get('/api/files', async (req, res) => {
@@ -65,7 +73,7 @@ app.get('/api/file-content', async (req, res) => {
         }
 
         // Si MongoDB está conectado, intentar obtener el contenido desde ahí
-        if (process.env.MONGODB_URI) {
+        if (process.env.MONGODB_URI && mongoose.connection.readyState === 1) {
             let fileDoc = await File.findOne({ path: filePath });
             if (fileDoc) {
                 return res.send(fileDoc.content);
@@ -90,7 +98,7 @@ app.post('/api/save-file', async (req, res) => {
         }
 
         // Si MongoDB está conectado, guardar ahí
-        if (process.env.MONGODB_URI) {
+        if (process.env.MONGODB_URI && mongoose.connection.readyState === 1) {
             await File.findOneAndUpdate(
                 { path: filePath },
                 { 
@@ -112,8 +120,11 @@ app.post('/api/save-file', async (req, res) => {
 
 // Manejo de errores
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Algo salió mal!' });
+  console.error('Error en la aplicación:', err);
+  res.status(500).json({ 
+    error: 'Algo salió mal!',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Error interno del servidor'
+  });
 });
 
 // Solo iniciar el servidor si no estamos en Vercel
