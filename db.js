@@ -44,13 +44,6 @@ const connectDB = async () => {
           console.log('MongoDB reconectado');
         });
 
-        // Manejar el cierre de la aplicación
-        process.on('SIGINT', async () => {
-          await mongoose.connection.close();
-          console.log('Conexión a MongoDB cerrada');
-          process.exit(0);
-        });
-
         return conn;
       } catch (error) {
         retries--;

@@ -70,77 +70,89 @@ app.get('/api/health', (req, res) => {
 
 // Ruta para obtener la lista de archivos
 app.get('/api/files', async (req, res) => {
-    try {
-        const files = await fs.readdir('.');
-        res.json(files);
-    } catch (error) {
-        console.error('Error al leer directorio:', error);
-        res.status(500).json({ error: 'Error al leer directorio' });
+  try {
+    // Si MongoDB está conectado, intentar obtener los archivos desde ahí
+    if (mongoConnected) {
+      try {
+        const files = await File.find({}, 'path lastModified');
+        return res.json(files.map(file => file.path));
+      } catch (mongoError) {
+        console.error('Error al leer de MongoDB:', mongoError);
+        // Continuamos con el sistema de archivos si MongoDB falla
+      }
     }
+
+    // Si no hay conexión a MongoDB o falló, leer del sistema de archivos
+    const files = await fs.readdir('.');
+    res.json(files);
+  } catch (error) {
+    console.error('Error al leer directorio:', error);
+    res.status(500).json({ error: 'Error al leer directorio' });
+  }
 });
 
 // Ruta para obtener el contenido de un archivo
 app.get('/api/file-content', async (req, res) => {
-    try {
-        const filePath = req.query.path;
-        if (!filePath) {
-            return res.status(400).json({ error: 'Ruta de archivo no proporcionada' });
-        }
-
-        // Si MongoDB está conectado, intentar obtener el contenido desde ahí
-        if (mongoConnected) {
-            try {
-                let fileDoc = await File.findOne({ path: filePath });
-                if (fileDoc) {
-                    return res.send(fileDoc.content);
-                }
-            } catch (mongoError) {
-                console.error('Error al leer de MongoDB:', mongoError);
-                // Continuamos con el sistema de archivos si MongoDB falla
-            }
-        }
-
-        // Si no está en MongoDB o no hay conexión, leer del sistema de archivos
-        const content = await fs.readFile(filePath, 'utf8');
-        res.send(content);
-    } catch (error) {
-        console.error('Error al leer archivo:', error);
-        res.status(500).json({ error: 'Error al leer archivo' });
+  try {
+    const filePath = req.query.path;
+    if (!filePath) {
+      return res.status(400).json({ error: 'Ruta de archivo no proporcionada' });
     }
+
+    // Si MongoDB está conectado, intentar obtener el contenido desde ahí
+    if (mongoConnected) {
+      try {
+        const fileDoc = await File.findOne({ path: filePath });
+        if (fileDoc) {
+          return res.send(fileDoc.content);
+        }
+      } catch (mongoError) {
+        console.error('Error al leer de MongoDB:', mongoError);
+        // Continuamos con el sistema de archivos si MongoDB falla
+      }
+    }
+
+    // Si no está en MongoDB o no hay conexión, leer del sistema de archivos
+    const content = await fs.readFile(filePath, 'utf8');
+    res.send(content);
+  } catch (error) {
+    console.error('Error al leer archivo:', error);
+    res.status(500).json({ error: 'Error al leer archivo' });
+  }
 });
 
 // Ruta para guardar cambios en un archivo
 app.post('/api/save-file', async (req, res) => {
-    try {
-        const { path: filePath, content } = req.body;
-        if (!filePath || !content) {
-            return res.status(400).json({ error: 'Ruta de archivo o contenido no proporcionado' });
-        }
-
-        // Si MongoDB está conectado, guardar ahí
-        if (mongoConnected) {
-            try {
-                await File.findOneAndUpdate(
-                    { path: filePath },
-                    { 
-                        content: content,
-                        lastModified: Date.now()
-                    },
-                    { upsert: true, new: true }
-                );
-            } catch (mongoError) {
-                console.error('Error al guardar en MongoDB:', mongoError);
-                // Continuamos con el sistema de archivos si MongoDB falla
-            }
-        }
-
-        // También guardar en el sistema de archivos
-        await fs.writeFile(filePath, content, 'utf8');
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error al guardar archivo:', error);
-        res.status(500).json({ error: 'Error al guardar archivo' });
+  try {
+    const { path: filePath, content } = req.body;
+    if (!filePath || !content) {
+      return res.status(400).json({ error: 'Ruta de archivo o contenido no proporcionado' });
     }
+
+    // Si MongoDB está conectado, guardar ahí
+    if (mongoConnected) {
+      try {
+        await File.findOneAndUpdate(
+          { path: filePath },
+          { 
+            content: content,
+            lastModified: Date.now()
+          },
+          { upsert: true, new: true }
+        );
+      } catch (mongoError) {
+        console.error('Error al guardar en MongoDB:', mongoError);
+        // Continuamos con el sistema de archivos si MongoDB falla
+      }
+    }
+
+    // También guardar en el sistema de archivos
+    await fs.writeFile(filePath, content, 'utf8');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error al guardar archivo:', error);
+    res.status(500).json({ error: 'Error al guardar archivo' });
+  }
 });
 
 // Manejo de errores
