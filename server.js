@@ -38,40 +38,68 @@ app.get('/', (req, res) => {
 });
 
 // Ruta para listar archivos
-app.get('/api/files', (req, res) => {
-  fs.readdir(__dirname, (err, files) => {
-    if (err) {
-      console.error('Error al leer el directorio:', err);
-      return res.status(500).json({ error: 'Error al leer el directorio' });
-    }
+app.get('/api/files', async (req, res) => {
+  try {
+    console.log('Listando archivos...');
+    const files = await fs.promises.readdir(__dirname);
+    console.log('Archivos encontrados:', files);
     res.json(files);
-  });
+  } catch (err) {
+    console.error('Error al leer el directorio:', err);
+    res.status(500).json({ error: 'Error al leer el directorio' });
+  }
 });
 
 // Ruta para obtener el contenido de un archivo
-app.get('/api/files/:filename', (req, res) => {
-  const filePath = path.join(__dirname, req.params.filename);
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error al leer el archivo:', err);
-      return res.status(500).json({ error: 'Error al leer el archivo' });
-    }
-    res.json({ content: data });
-  });
+app.get('/api/files/:filename', async (req, res) => {
+  try {
+    const filename = req.params.filename;
+    console.log('Intentando leer archivo:', filename);
+    
+    const filePath = path.join(__dirname, filename);
+    console.log('Ruta completa del archivo:', filePath);
+    
+    const content = await fs.promises.readFile(filePath, 'utf8');
+    console.log('Contenido del archivo leído correctamente');
+    
+    res.json({ content });
+  } catch (err) {
+    console.error('Error al leer el archivo:', err);
+    res.status(500).json({ 
+      error: 'Error al leer el archivo',
+      message: err.message,
+      path: req.params.filename
+    });
+  }
 });
 
 // Ruta para guardar cambios en un archivo
-app.post('/api/files/:filename', (req, res) => {
-  const filePath = path.join(__dirname, req.params.filename);
-  const content = req.body.content;
-
-  fs.writeFile(filePath, content, 'utf8', (err) => {
-    if (err) {
-      console.error('Error al guardar el archivo:', err);
-      return res.status(500).json({ error: 'Error al guardar el archivo' });
-    }
-    res.json({ message: 'Archivo guardado correctamente' });
-  });
+app.post('/api/files/:filename', async (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const content = req.body.content;
+    
+    console.log('Intentando guardar archivo:', filename);
+    console.log('Contenido a guardar:', content ? 'Contenido presente' : 'Sin contenido');
+    
+    const filePath = path.join(__dirname, filename);
+    console.log('Ruta completa del archivo:', filePath);
+    
+    await fs.promises.writeFile(filePath, content, 'utf8');
+    console.log('Archivo guardado correctamente');
+    
+    res.json({ 
+      message: 'Archivo guardado correctamente',
+      filename: filename
+    });
+  } catch (err) {
+    console.error('Error al guardar el archivo:', err);
+    res.status(500).json({ 
+      error: 'Error al guardar el archivo',
+      message: err.message,
+      path: req.params.filename
+    });
+  }
 });
 
 // Ruta de verificación de salud
@@ -85,7 +113,7 @@ app.get('/api/health', (req, res) => {
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Error en la aplicación:', err.stack);
   res.status(500).json({ 
     error: 'Algo salió mal!',
     message: process.env.NODE_ENV === 'development' ? err.message : 'Internal Server Error'
