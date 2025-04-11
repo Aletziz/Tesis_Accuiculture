@@ -123,6 +123,12 @@ body {
 
   .nav-toggle {
     display: block;
+    color: var(--text-light);
+    background: transparent;
+    border: 2px solid var(--text-light);
+    border-radius: 4px;
+    padding: 0.5rem;
+    cursor: pointer;
   }
 
   .nav-menu {
@@ -136,6 +142,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
   }
 
   .nav-menu.active {
@@ -152,6 +159,7 @@ body {
     padding: 0.8rem 0;
     font-size: 1.1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-light) !important;
   }
 
   .nav-menu a::after {
@@ -172,6 +180,11 @@ body {
   .nav-menu a {
     font-size: 1rem;
     padding: 0.7rem 0;
+  }
+
+  .nav-toggle {
+    padding: 0.4rem;
+    font-size: 1.3rem;
   }
 }
 
