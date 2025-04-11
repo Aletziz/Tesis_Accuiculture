@@ -16,13 +16,6 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Conectar a MongoDB si la URI está definida
-if (process.env.MONGODB_URI) {
-  connectDB().catch(err => {
-    console.error('Error connecting to MongoDB:', err);
-  });
-}
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -99,10 +92,29 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Función para iniciar el servidor
+const startServer = async () => {
+  try {
+    // Intentar conectar a MongoDB si la URI está definida
+    if (process.env.MONGODB_URI) {
+      console.log('Iniciando conexión a MongoDB...');
+      await connectDB();
+    } else {
+      console.log('MONGODB_URI no definida, omitiendo conexión a MongoDB');
+    }
+
+    // Iniciar el servidor
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Servidor corriendo en el puerto ${PORT}`);
+      console.log('MongoDB connection state:', mongoose.connection.readyState === 1 ? 'connected' : 'disconnected');
+    });
+  } catch (error) {
+    console.error('Error al iniciar el servidor:', error);
+    process.exit(1);
+  }
+};
+
 // Iniciar el servidor
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
-  console.log('MongoDB connection state:', mongoose.connection.readyState === 1 ? 'connected' : 'disconnected');
-});
+startServer();
 
 export default app;
