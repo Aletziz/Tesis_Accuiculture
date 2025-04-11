@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administración - Tesis</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .admin-panel {
+        display: none;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .file-list {
+        margin-bottom: 20px;
+        padding: 10px;
+        background: #f5f5f5;
+        border-radius: 5px;
+      }
+      .file-item {
+        padding: 10px;
+        margin: 5px 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .file-item:hover {
+        background: #f0f0f0;
+      }
+      .editor-container {
+        display: none;
+        margin-top: 20px;
+      }
+      .editor-toolbar {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #f0f0f0;
+        border-radius: 5px;
+      }
+      .editor-toolbar button {
+        margin-right: 5px;
+        padding: 5px 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .editor-toolbar button:hover {
+        background: #e0e0e0;
+      }
+      .editor-content {
+        width: 100%;
+        min-height: 500px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        background: #fff;
+        overflow-y: auto;
+      }
+      .save-button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .save-button:hover {
+        background: #45a049;
+      }
+      .logout-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background: #f44336;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .logout-button:hover {
+        background: #da190b;
+      }
+      /* Estilos para el editor de contenido */
+      .content-editor {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 5px;
+      }
+      .content-editor h3 {
+        margin-bottom: 15px;
+        color: #333;
+      }
+      .editor-section {
+        background: white;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      /* Estilos para elementos editables */
+      [contenteditable="true"] {
+        outline: 1px dashed #007bff;
+        padding: 2px 4px;
+        margin: 2px 0;
+        min-height: 20px;
+      }
+      [contenteditable="true"]:hover {
+        background-color: #f0f7ff;
+      }
+      [contenteditable="true"]:focus {
+        outline: 2px solid #007bff;
+        background-color: #e6f2ff;
+      }
+      /* Estilos para mejorar la visualización del contenido */
+      .editor-section h1, 
+      .editor-section h2, 
+      .editor-section h3, 
+      .editor-section h4, 
+      .editor-section h5, 
+      .editor-section h6 {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+      .editor-section p {
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+      .editor-section ul, 
+      .editor-section ol {
+        margin-bottom: 10px;
+        padding-left: 20px;
+      }
+      .editor-section img {
+        max-width: 100%;
+        height: auto;
+        margin: 10px 0;
+      }
+      .editor-section table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+      }
+      .editor-section table th, 
+      .editor-section table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      .editor-section table th {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container" id="loginContainer">
+      <div class="login-box">
+        <h2>Acceso Administrativo</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="text" id="username" placeholder="Usuario" required />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="Contraseña"
+              required
+            />
+          </div>
+          <button type="submit" class="login-button">Iniciar Sesión</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="admin-panel" id="adminPanel">
+      <button class="logout-button" id="logoutButton">Cerrar Sesión</button>
+      <h1>Panel de Administración</h1>
+      
+      <div class="file-list" id="fileList">
+        <h2>Archivos Disponibles</h2>
+        <!-- Los archivos se cargarán dinámicamente aquí -->
+      </div>
+
+      <div class="editor-container" id="editorContainer">
+        <h2 id="currentFile">Editor</h2>
+        <div class="editor-toolbar">
+          <button onclick="formatText('bold')">Negrita</button>
+          <button onclick="formatText('italic')">Cursiva</button>
+          <button onclick="formatText('underline')">Subrayado</button>
+          <button onclick="formatText('insertUnorderedList')">Lista</button>
+          <button onclick="formatText('justifyLeft')">Alinear Izquierda</button>
+          <button onclick="formatText('justifyCenter')">Centrar</button>
+          <button onclick="formatText('justifyRight')">Alinear Derecha</button>
+        </div>
+        <div class="editor-content" id="editorContent" contenteditable="true"></div>
+        <button class="save-button" id="saveButton">Guardar Cambios</button>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

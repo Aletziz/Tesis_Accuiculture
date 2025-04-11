@@ -30,22 +30,30 @@
       <div class="content-box">
         <a href="capitulo1.html" class="back-link">← Volver a Generalidades</a>
 
-        <h1>Normas Jurídicas</h1>
+        <h1 class="chapter-text">Normas Jurídicas</h1>
 
         <div class="sections-container">
-          <a href="normas-estrategia-ambiental.html" class="section-button">
-            <div class="section">
+          <div class="section">
+            <div class="chapter-text">
               <h3>Estrategia Ambiental Nacional</h3>
               <p>Marco normativo y lineamientos ambientales</p>
             </div>
-          </a>
+            <a href="normas-estrategia-ambiental.html" class="section-button"
+              >Ver más</a
+            >
+          </div>
 
-          <a href="normas-estrategia-biodiversidad.html" class="section-button">
-            <div class="section">
+          <div class="section">
+            <div class="chapter-text">
               <h3>Estrategia Nacional Diversidad Biológica</h3>
               <p>Políticas y regulaciones sobre biodiversidad</p>
             </div>
-          </a>
+            <a
+              href="normas-estrategia-biodiversidad.html"
+              class="section-button"
+              >Ver más</a
+            >
+          </div>
         </div>
 
         <div class="navigation-buttons">
@@ -57,6 +65,9 @@
       </div>
     </div>
 
+    <!-- Agrega los scripts necesarios -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="main.js"></script>
     <script>
       const navToggle = document.getElementById("navToggle");
       const navMenu = document.getElementById("navMenu");
