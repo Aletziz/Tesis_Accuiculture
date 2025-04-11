@@ -70,14 +70,14 @@ document.addEventListener("DOMContentLoaded", function () {
     currentFilePath = filePath;
     currentFile.textContent = `Editando: ${filePath}`;
     
-    fetch(`/api/file-content?path=${encodeURIComponent(filePath)}`)
-      .then(response => response.text())
-      .then(content => {
-        originalContent = content;
+    fetch(`/api/files/${encodeURIComponent(filePath)}`)
+      .then(response => response.json())
+      .then(data => {
+        originalContent = data.content;
         
         // Crear un parser de HTML
         const parser = new DOMParser();
-        const doc = parser.parseFromString(content, 'text/html');
+        const doc = parser.parseFromString(originalContent, 'text/html');
         
         // Encontrar el contenido principal (main o div con clase content)
         const mainContent = doc.querySelector('main') || doc.querySelector('.content') || doc.querySelector('article') || doc.querySelector('.container');
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         } else {
           // Si no encontramos un contenedor específico, mostrar el contenido completo
-          editorContent.innerHTML = content;
+          editorContent.innerHTML = originalContent;
           
           // Hacer que todo el contenido sea editable
           const allElements = editorContent.querySelectorAll('*');
@@ -148,19 +148,18 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    fetch("/api/save-file", {
+    fetch(`/api/files/${encodeURIComponent(currentFilePath)}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        path: currentFilePath,
         content: contentToSave
       })
     })
     .then(response => response.json())
     .then(result => {
-      if (result.success) {
+      if (result.message) {
         alert("Archivo guardado exitosamente");
       } else {
         alert("Error al guardar el archivo");
