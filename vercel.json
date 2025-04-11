@@ -58,10 +58,6 @@
     {
       "src": "/api/mongodb",
       "dest": "/api/mongodb.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
     }
   ],
   "env": {

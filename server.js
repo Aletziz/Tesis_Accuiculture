@@ -1,175 +1,103 @@
 import express from 'express';
-import { promises as fs } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import connectDB from './db.js';
-import File from './models/File.js';
-import dotenv from 'dotenv';
+import { dirname } from 'path';
+import cors from 'cors';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import File from './models/File.js';
+import { connectDB } from './db.js';
 
+// Configurar dotenv
 dotenv.config();
 
+// Obtener __dirname en módulos ES
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
+
+// Conectar a MongoDB si la URI está definida
+if (process.env.MONGODB_URI) {
+  connectDB();
+}
 
 const app = express();
-const port = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
-// Middleware para parsear JSON
+// Middleware para parsear JSON con límite de 50mb
 app.use(express.json({ limit: '50mb' }));
+app.use(cors());
 
-// Configuración de CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
-// Servir archivos estáticos
+// Servir archivos estáticos desde el directorio actual
 app.use(express.static(path.join(__dirname, '.')));
+
+// Servir archivos CSS desde el directorio css
 app.use('/css', express.static(path.join(__dirname, 'css')));
+
+// Servir archivos JS desde el directorio js
 app.use('/js', express.static(path.join(__dirname, 'js')));
 
-// Ruta principal
+// Ruta para la página principal
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Ruta de login
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
-});
-
-// Variable para rastrear el estado de la conexión MongoDB
-let mongoConnected = false;
-
-// Conectar a MongoDB
-if (process.env.MONGODB_URI) {
-  console.log('Intentando conectar a MongoDB...');
-  connectDB()
-    .then((conn) => {
-      if (conn) {
-        mongoConnected = true;
-        console.log('MongoDB conectado exitosamente');
-      }
-    })
-    .catch((error) => {
-      console.error('Error al conectar a MongoDB:', error);
-      // No lanzar el error, permitir que la aplicación continúe sin MongoDB
-    });
-}
-
-// Ruta de health check
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    mongodb: mongoConnected ? 'connected' : 'disconnected',
-    environment: process.env.NODE_ENV
-  });
-});
-
-// Ruta para obtener la lista de archivos
-app.get('/api/files', async (req, res) => {
-  try {
-    // Si MongoDB está conectado, intentar obtener los archivos desde ahí
-    if (mongoConnected) {
-      try {
-        const files = await File.find({}, 'path lastModified');
-        return res.json(files.map(file => file.path));
-      } catch (mongoError) {
-        console.error('Error al leer de MongoDB:', mongoError);
-        // Continuamos con el sistema de archivos si MongoDB falla
-      }
+// Ruta para listar archivos
+app.get('/api/files', (req, res) => {
+  fs.readdir(__dirname, (err, files) => {
+    if (err) {
+      console.error('Error al leer el directorio:', err);
+      return res.status(500).json({ error: 'Error al leer el directorio' });
     }
-
-    // Si no hay conexión a MongoDB o falló, leer del sistema de archivos
-    const files = await fs.readdir('.');
     res.json(files);
-  } catch (error) {
-    console.error('Error al leer directorio:', error);
-    res.status(500).json({ error: 'Error al leer directorio' });
-  }
+  });
 });
 
 // Ruta para obtener el contenido de un archivo
-app.get('/api/file-content', async (req, res) => {
-  try {
-    const filePath = req.query.path;
-    if (!filePath) {
-      return res.status(400).json({ error: 'Ruta de archivo no proporcionada' });
+app.get('/api/files/:filename', (req, res) => {
+  const filePath = path.join(__dirname, req.params.filename);
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error al leer el archivo:', err);
+      return res.status(500).json({ error: 'Error al leer el archivo' });
     }
-
-    // Si MongoDB está conectado, intentar obtener el contenido desde ahí
-    if (mongoConnected) {
-      try {
-        const fileDoc = await File.findOne({ path: filePath });
-        if (fileDoc) {
-          return res.send(fileDoc.content);
-        }
-      } catch (mongoError) {
-        console.error('Error al leer de MongoDB:', mongoError);
-        // Continuamos con el sistema de archivos si MongoDB falla
-      }
-    }
-
-    // Si no está en MongoDB o no hay conexión, leer del sistema de archivos
-    const content = await fs.readFile(filePath, 'utf8');
-    res.send(content);
-  } catch (error) {
-    console.error('Error al leer archivo:', error);
-    res.status(500).json({ error: 'Error al leer archivo' });
-  }
-});
-
-// Ruta para guardar cambios en un archivo
-app.post('/api/save-file', async (req, res) => {
-  try {
-    const { path: filePath, content } = req.body;
-    if (!filePath || !content) {
-      return res.status(400).json({ error: 'Ruta de archivo o contenido no proporcionado' });
-    }
-
-    // Si MongoDB está conectado, guardar ahí
-    if (mongoConnected) {
-      try {
-        await File.findOneAndUpdate(
-          { path: filePath },
-          { 
-            content: content,
-            lastModified: Date.now()
-          },
-          { upsert: true, new: true }
-        );
-      } catch (mongoError) {
-        console.error('Error al guardar en MongoDB:', mongoError);
-        // Continuamos con el sistema de archivos si MongoDB falla
-      }
-    }
-
-    // También guardar en el sistema de archivos
-    await fs.writeFile(filePath, content, 'utf8');
-    res.json({ success: true });
-  } catch (error) {
-    console.error('Error al guardar archivo:', error);
-    res.status(500).json({ error: 'Error al guardar archivo' });
-  }
-});
-
-// Manejo de errores
-app.use((err, req, res, next) => {
-  console.error('Error en la aplicación:', err);
-  res.status(500).json({ 
-    error: 'Algo salió mal!',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Error interno del servidor'
+    res.json({ content: data });
   });
 });
 
-// Iniciar el servidor solo si no estamos en Vercel
+// Ruta para guardar cambios en un archivo
+app.post('/api/files/:filename', (req, res) => {
+  const filePath = path.join(__dirname, req.params.filename);
+  const content = req.body.content;
+
+  fs.writeFile(filePath, content, 'utf8', (err) => {
+    if (err) {
+      console.error('Error al guardar el archivo:', err);
+      return res.status(500).json({ error: 'Error al guardar el archivo' });
+    }
+    res.json({ message: 'Archivo guardado correctamente' });
+  });
+});
+
+// Ruta de verificación de salud
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Middleware de manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Algo salió mal!' });
+});
+
+// Iniciar el servidor solo si no estamos en producción
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
-    console.log(`Entorno: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`MongoDB conectado: ${mongoConnected ? 'Sí' : 'No'}`);
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
   });
 }
 
