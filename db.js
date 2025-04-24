@@ -7,44 +7,81 @@ dotenv.config();
 // Conectar a MongoDB
 const connectDB = async () => {
   try {
-    if (!process.env.MONGODB_URI) {
-      console.log('MONGODB_URI no definida en las variables de entorno');
-      return;
+    const MONGODB_URI = process.env.MONGODB_URI;
+    
+    if (!MONGODB_URI) {
+      console.warn('MONGODB_URI no está definida en las variables de entorno');
+      return false;
     }
 
-    console.log('Intentando conectar a MongoDB...');
-    console.log('URI de MongoDB:', process.env.MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//****:****@')); // Oculta las credenciales en los logs
+    // Verificar si la URI contiene un placeholder de contraseña
+    if (MONGODB_URI.includes('<db_password>')) {
+      console.error('Error: La URI de MongoDB contiene un placeholder de contraseña.');
+      console.error('Por favor, reemplaza <db_password> en tu archivo .env con tu contraseña real de MongoDB Atlas.');
+      return false;
+    }
+
+    // Ocultar la contraseña en los logs
+    const maskedURI = MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//****:****@');
+    console.log('URI de MongoDB (oculta):', maskedURI);
 
     const options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // Timeout después de 5 segundos
-      socketTimeoutMS: 45000, // Timeout del socket después de 45 segundos
+      serverSelectionTimeoutMS: 5000, // Reducido a 5 segundos para fallar más rápido
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000, // Reducido a 10 segundos
+      retryWrites: true,
+      retryReads: true,
+      maxPoolSize: 10,
+      minPoolSize: 5
     };
 
-    await mongoose.connect(process.env.MONGODB_URI, options);
-    
+    console.log('Intentando conectar a MongoDB...');
+    await mongoose.connect(MONGODB_URI, options);
     console.log('MongoDB conectado exitosamente');
-    console.log('Estado de la conexión:', mongoose.connection.readyState);
-    
-    // Configurar eventos de conexión
-    mongoose.connection.on('error', (err) => {
-      console.error('Error en la conexión de MongoDB:', err);
-    });
-
-    mongoose.connection.on('disconnected', () => {
-      console.log('MongoDB desconectado');
-    });
-
-    mongoose.connection.on('reconnected', () => {
-      console.log('MongoDB reconectado');
-    });
-
+    return true;
   } catch (error) {
     console.error('Error al conectar a MongoDB:', error.message);
-    console.error('Stack trace:', error.stack);
-    throw error; // Re-lanzar el error para manejarlo en el nivel superior
+    
+    // Manejar errores específicos
+    if (error.name === 'MongooseServerSelectionError') {
+      console.error('\nSugerencias para resolver el problema:');
+      console.error('1. Verifica tu conexión a internet');
+      console.error('2. Asegúrate de que el clúster de MongoDB Atlas esté activo');
+      console.error('3. Verifica que la URI de conexión sea correcta');
+      console.error('4. Intenta usar el comando ping para verificar la conectividad:');
+      console.error('   ping tesis.bhhr20s.mongodb.net');
+      console.error('5. Verifica que no haya un firewall bloqueando la conexión');
+    }
+    
+    return false;
   }
 };
 
-export { connectDB }; 
+// Manejar eventos de conexión
+mongoose.connection.on('connected', () => {
+  console.log('Mongoose conectado a MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('Error de conexión Mongoose:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose desconectado de MongoDB');
+});
+
+// Manejar el cierre de la aplicación
+process.on('SIGINT', async () => {
+  try {
+    await mongoose.connection.close();
+    console.log('Conexión a MongoDB cerrada por terminación de la aplicación');
+    process.exit(0);
+  } catch (error) {
+    console.error('Error al cerrar la conexión:', error);
+    process.exit(1);
+  }
+});
+
+export default connectDB; 
