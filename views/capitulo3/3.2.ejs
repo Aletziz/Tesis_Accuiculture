@@ -1,0 +1,92 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-primary mb-4">3.2. Diseño del Sistema</h1>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 text-primary mb-3">3.2.1. Arquitectura del Sistema</h2>
+                    <div class="content-section" id="section-3.2.1">
+                        <div class="editable-content">
+                            <p>La arquitectura del sistema se basa en:</p>
+                            <ul>
+                                <li>Arquitectura cliente-servidor</li>
+                                <li>Patrón MVC (Modelo-Vista-Controlador)</li>
+                                <li>Base de datos MongoDB para almacenamiento</li>
+                                <li>API RESTful para comunicación</li>
+                                <li>Frontend en EJS con Bootstrap</li>
+                                <li>Autenticación JWT</li>
+                            </ul>
+                        </div>
+                        <div class="edit-controls mt-3">
+                            <button class="btn btn-primary btn-sm edit-btn" data-section="3.2.1">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-success btn-sm save-btn d-none" data-section="3.2.1">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 text-primary mb-3">3.2.2. Diseño de Base de Datos</h2>
+                    <div class="content-section" id="section-3.2.2">
+                        <div class="editable-content">
+                            <p>Estructura de la base de datos:</p>
+                            <ul>
+                                <li>Colección de usuarios</li>
+                                <li>Colección de documentos</li>
+                                <li>Colección de versiones</li>
+                                <li>Colección de comentarios</li>
+                                <li>Colección de permisos</li>
+                            </ul>
+                            <p>Relaciones y esquemas diseñados para optimizar el rendimiento y la escalabilidad.</p>
+                        </div>
+                        <div class="edit-controls mt-3">
+                            <button class="btn btn-primary btn-sm edit-btn" data-section="3.2.2">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-success btn-sm save-btn d-none" data-section="3.2.2">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 text-primary mb-3">3.2.3. Diseño de Interfaz</h2>
+                    <div class="content-section" id="section-3.2.3">
+                        <div class="editable-content">
+                            <p>Características de la interfaz:</p>
+                            <ul>
+                                <li>Diseño responsive y adaptable</li>
+                                <li>Paleta de colores profesional</li>
+                                <li>Navegación intuitiva</li>
+                                <li>Componentes interactivos</li>
+                                <li>Feedback visual en acciones</li>
+                                <li>Soporte para temas claro/oscuro</li>
+                            </ul>
+                        </div>
+                        <div class="edit-controls mt-3">
+                            <button class="btn btn-primary btn-sm edit-btn" data-section="3.2.3">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-success btn-sm save-btn d-none" data-section="3.2.3">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %> 
