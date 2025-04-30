@@ -111,18 +111,12 @@ const startServer = async () => {
       });
     });
 
-    // Iniciar el servidor en modo desarrollo o producción
-    if (process.env.NODE_ENV === 'production') {
-      console.log('Servidor configurado para producción. No se iniciará el servidor local.');
+    // Iniciar el servidor
+    app.listen(PORT, () => {
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
       console.log('Estado de MongoDB:', isMongoDBConnected ? 'Conectado' : 'Desconectado');
-    } else {
-      // En modo desarrollo, siempre iniciar el servidor local
-      app.listen(PORT, () => {
-        console.log(`Servidor corriendo en http://localhost:${PORT}`);
-        console.log('Estado de MongoDB:', isMongoDBConnected ? 'Conectado' : 'Desconectado');
-        console.log('Modo: development');
-      });
-    }
+      console.log('Modo:', process.env.NODE_ENV || 'development');
+    });
 
   } catch (error) {
     console.error('Error al iniciar el servidor:', error);
