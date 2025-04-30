@@ -41,7 +41,7 @@ const connectDB = async () => {
       readPreference: 'primaryPreferred',
       // Añadir opciones de SSL
       ssl: true,
-      sslValidate: true
+      tlsAllowInvalidCertificates: true
     };
 
     console.log('Intentando conectar a MongoDB con las siguientes opciones:');

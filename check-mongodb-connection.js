@@ -138,7 +138,7 @@ const checkMongoDBConnection = async () => {
       replicaSet: 'atlas-3i59kx-shard-0',
       readPreference: 'primaryPreferred',
       ssl: true,
-      sslValidate: true
+      tlsAllowInvalidCertificates: true
     };
     
     try {
