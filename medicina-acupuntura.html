@@ -1,63 +1,54 @@
-<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Acupuntura - Medicina Natural</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="css/thesisEditor.css" />
-    <script src="js/thesisEditor.js"></script>
-  </head>
-  <body>
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acupuntura - Capítulo 5</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
     <nav class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
-        <button class="nav-toggle" id="navToggle">
-          <i class="fas fa-bars"></i>
-        </button>
-        <ul class="nav-menu" id="navMenu">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="galeria.html">Galería</a></li>
-          <li><a href="audiovisuales.html">Audiovisuales</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-          <li><a href="admin.html">Admin</a></li>
-        </ul>
-      </div>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="galeria.html">Galería</a></li>
+                <li><a href="audiovisuales.html">Audiovisuales</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </div>
     </nav>
 
     <div class="container">
-      <div class="content-box">
-        <a href="medicina-natural.html" class="back-link"
-          >← Volver a Medicina Natural</a
-        >
+        <div class="content-box">
+            <a href="capitulo5.html" class="back-link">← Volver a Capítulo 5</a>
 
-        <h1>Acupuntura</h1>
+            <h1 class="editable-content">Acupuntura</h1>
 
-        <div class="chapter-text">
-          <p>Tu texto irá aquí...</p>
-          <!-- Aquí puedes agregar imágenes usando la etiqueta img -->
+            <div class="chapter-text">
+                <p class="editable-content">
+                    [Aquí puedes escribir el contenido sobre acupuntura. Este texto será editable cuando estés en modo administrador.]
+                </p>
+            </div>
+
+            <div class="navigation-buttons">
+                <a href="medicina-natural.html" class="nav-button">← Sección Anterior</a>
+                <a href="medicina-fitoterapia.html" class="nav-button">Siguiente Sección →</a>
+            </div>
         </div>
-
-        <div class="navigation-buttons">
-          <a href="medicina-natural.html" class="nav-button">← Volver</a>
-          <a href="medicina-fitoterapia.html" class="nav-button"
-            >Siguiente Sección →</a
-          >
-        </div>
-      </div>
     </div>
 
     <script>
-      const navToggle = document.getElementById("navToggle");
-      const navMenu = document.getElementById("navMenu");
-      navToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-      });
+        const navToggle = document.getElementById("navToggle");
+        const navMenu = document.getElementById("navMenu");
+
+        navToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
     </script>
-  </body>
+</body>
 </html>

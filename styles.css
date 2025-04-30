@@ -348,7 +348,9 @@ h2 {
   text-decoration: none;
   color: inherit;
   display: block;
-  width: 100%;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 .special-intro .section {
@@ -385,18 +387,12 @@ h2 {
 .section {
   background-color: var(--background-light);
   border-radius: 15px;
-  padding: 3rem;
-  text-align: center;
-  transition: all 0.4s ease;
-  box-shadow: 0 5px 15px var(--shadow-color);
-  border: 1px solid var(--border-color);
-  text-decoration: none;
-  color: inherit;
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  position: relative;
+  z-index: 1;
 }
 
 .special-intro .section {
@@ -420,9 +416,43 @@ h2 {
   color: var(--text-light);
 }
 
-.section-button {
+.section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+.section h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.section p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin: 0;
+  pointer-events: none;
+}
+
+.nav-button {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--text-light);
   text-decoration: none;
-  color: inherit;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin: 0.5rem;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--shadow-color);
 }
 
 /* Navbar links */
@@ -447,37 +477,47 @@ h2 {
 .navigation-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 3rem;
-  padding-top: 2rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
   border-top: 1px solid var(--border-color);
-  width: 100%;
+  user-select: none;
+  pointer-events: auto;
 }
 
 .nav-button {
-  text-decoration: none;
+  padding: 0.8rem 1.5rem;
   background-color: var(--primary-color);
   color: var(--text-light);
-  padding: 0.8rem 1.5rem;
+  text-decoration: none;
   border-radius: 8px;
   font-weight: 500;
-  letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  width: auto;
-  min-width: 120px;
-  text-align: center;
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
-@media (max-width: 768px) {
-  .navigation-buttons {
-    flex-direction: row;
-    gap: 1rem;
-  }
+.nav-button:hover {
+  background-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
-  .nav-button {
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
-    min-width: 100px;
-  }
+.nav-button:active {
+  transform: translateY(0);
+}
+
+/* Asegurar que los botones no sean editables */
+.nav-button,
+.navigation-buttons,
+.back-link {
+  contenteditable: false !important;
+  -webkit-user-modify: read-only !important;
+  -moz-user-modify: read-only !important;
+  user-modify: read-only !important;
 }
 
 /* Aumento del tamaño de los capítulos */
@@ -1282,6 +1322,59 @@ h2 {
   min-height: 30px;
 }
 
+/* Ensure edit buttons are visible */
+.edit-button,
+.save-button {
+  z-index: 10;
+  position: relative;
+}
+
+/* Estilos para elementos editables */
+.editable-wrapper {
+  position: relative;
+  margin: 10px 0;
+}
+
+.edit-controls {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.edit-button,
+.save-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.edit-button {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.save-button {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.editing {
+  padding: 10px;
+  border: 2px dashed #4a90e2;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  min-height: 30px;
+}
+
 /* Asegurar que los controles de edición no interfieran con el diseño */
 .editable-wrapper {
   padding-top: 35px;
@@ -1413,4 +1506,44 @@ h2 {
 .special-intro .save-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.section-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.section-navigation .nav-button {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+
+.section-navigation .nav-button:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+@media (max-width: 768px) {
+    .section-navigation {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .section-navigation .nav-button {
+        width: 100%;
+        text-align: center;
+        margin: 0.5rem 0;
+    }
 }

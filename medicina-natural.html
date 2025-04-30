@@ -1,134 +1,52 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="es"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicina Natural y Tradicional</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
     <nav class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
-        <button class="nav-toggle" id="navToggle">
-          <i class="fas fa-bars"></i>
-        </button>
-        <ul class="nav-menu" id="navMenu">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="galeria.html">Galería</a></li>
-          <li><a href="audiovisuales.html">Audiovisuales</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-          <li><a href="admin.html">Admin</a></li>
-        </ul>
-      </div>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="galeria.html">Galería</a></li>
+                <li><a href="audiovisuales.html">Audiovisuales</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <div class="container">
-      <div class="content-box">
-        <a href="capitulo5.html" class="back-link">← Volver al Capítulo 5</a>
+    <div class="container" contenteditable="true">
+        <div class="content-box" contenteditable="true">
+            <a href="capitulo5.html" class="back-link" contenteditable="true">← Volver al Capítulo 5</a>
 
-        <h1>Medicina Natural y Tradicional</h1>
+            <h1 class="editable-content" contenteditable="true">Medicina Natural y Tradicional</h1>
 
-        <div class="sections-container">
-          <a href="medicina-acupuntura.html" class="section-button">
-            <div class="section">
-              <h3>Acupuntura</h3>
+            <div class="chapter-text" contenteditable="true">
+                <p class="editable-content" contenteditable="true">
+                    [Aquí puedes escribir el contenido sobre medicina natural y tradicional. Este texto será editable cuando estés en modo administrador.]aaaaaaaa</p>
             </div>
-          </a>
 
-          <a href="medicina-fitoterapia.html" class="section-button">
-            <div class="section">
-              <h3>Fitoterapia</h3>
+            <div class="navigation-buttons" contenteditable="true">
+                <a href="capitulo5.html" class="nav-button" contenteditable="true">← Volver al Capítulo</a>
+                <a href="medicina-acupuntura.html" class="nav-button" contenteditable="true">Siguiente Sección →</a>
             </div>
-          </a>
-
-          <a href="medicina-apiterapia.html" class="section-button">
-            <div class="section">
-              <h3>Apiterapia</h3>
-            </div>
-          </a>
-
-          <a href="medicina-homeopatia.html" class="section-button">
-            <div class="section">
-              <h3>Homeopatía</h3>
-            </div>
-          </a>
-
-          <a href="medicina-ejercicios.html" class="section-button">
-            <div class="section">
-              <h3>Ejercicios Terapéuticos Tradicionales</h3>
-            </div>
-          </a>
-
-          <a href="medicina-terapia-floral.html" class="section-button">
-            <div class="section">
-              <h3>Terapia Floral</h3>
-            </div>
-          </a>
-
-          <a href="medicina-hidrologia.html" class="section-button">
-            <div class="section">
-              <h3>Hidrología Médica</h3>
-            </div>
-          </a>
-
-          <a href="medicina-fangoterapia.html" class="section-button">
-            <div class="section">
-              <h3>Fangoterapia</h3>
-            </div>
-          </a>
-
-          <a href="medicina-orientacion.html" class="section-button">
-            <div class="section">
-              <h3>Orientación Nutricional</h3>
-            </div>
-          </a>
-
-          <a href="medicina-helioterapia.html" class="section-button">
-            <div class="section">
-              <h3>Helioterapia</h3>
-            </div>
-          </a>
-
-          <a href="medicina-talasoterapia.html" class="section-button">
-            <div class="section">
-              <h3>Talasoterapia</h3>
-            </div>
-          </a>
-
-          <a href="medicina-ozonoterapia.html" class="section-button">
-            <div class="section">
-              <h3>Ozonoterapia</h3>
-            </div>
-          </a>
-
-          <a href="medicina-digitopuntura.html" class="section-button">
-            <div class="section">
-              <h3>Digitopuntura</h3>
-            </div>
-          </a>
         </div>
-
-        <div class="navigation-buttons">
-          <a href="capitulo5.html" class="nav-button">← Volver</a>
-          <a href="arboles-creencias.html" class="nav-button"
-            >Siguiente Sección →</a
-          >
-        </div>
-      </div>
     </div>
 
     <script>
-      const navToggle = document.getElementById("navToggle");
-      const navMenu = document.getElementById("navMenu");
-      navToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-      });
+        const navToggle = document.getElementById("navToggle");
+        const navMenu = document.getElementById("navMenu");
+
+        navToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
     </script>
-  </body>
-</html>
+
+</body></html>

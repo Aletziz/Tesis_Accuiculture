@@ -1,37 +1,69 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 // Configurar dotenv
 dotenv.config();
 
-async function testConnection() {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Función para probar la conexión a MongoDB
+const testMongoDBConnection = async () => {
   try {
-    console.log('Intentando conectar a MongoDB...');
-    console.log('URI:', process.env.MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//****:****@'));
+    console.log('Iniciando prueba de conexión a MongoDB...');
     
-    await mongoose.connect(process.env.MONGODB_URI, {
+    const MONGODB_URI = process.env.MONGODB_URI;
+    
+    if (!MONGODB_URI) {
+      console.error('Error: MONGODB_URI no está definida en las variables de entorno');
+      return;
+    }
+    
+    // Verificar si la URI contiene un placeholder de contraseña
+    if (MONGODB_URI.includes('<db_password>')) {
+      console.error('Error: La URI de MongoDB contiene un placeholder de contraseña.');
+      console.error('Por favor, reemplaza <db_password> en tu archivo .env con tu contraseña real de MongoDB Atlas.');
+      return;
+    }
+    
+    // Ocultar la contraseña en los logs
+    const maskedURI = MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//****:****@');
+    console.log('URI de MongoDB (oculta):', maskedURI);
+    
+    const options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000
-    });
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000
+    };
     
-    console.log('✅ Conexión exitosa!');
-    console.log('Base de datos:', mongoose.connection.name);
-    console.log('Host:', mongoose.connection.host);
-    console.log('Puerto:', mongoose.connection.port);
+    console.log('Intentando conectar a MongoDB...');
+    await mongoose.connect(MONGODB_URI, options);
     
+    console.log('¡Conexión exitosa a MongoDB!');
+    console.log('Estado de la conexión:', mongoose.connection.readyState);
+    
+    // Cerrar la conexión
     await mongoose.connection.close();
+    console.log('Conexión cerrada correctamente');
+    
   } catch (error) {
-    console.error('❌ Error de conexión:', error.message);
+    console.error('Error al conectar a MongoDB:', error.message);
     
     if (error.name === 'MongooseServerSelectionError') {
-      console.log('\nSugerencias:');
-      console.log('1. Verifica que el clúster esté activo en MongoDB Atlas');
-      console.log('2. Confirma que el nombre del clúster sea correcto');
-      console.log('3. Verifica que las credenciales sean correctas');
-      console.log('4. Asegúrate de que 0.0.0.0/0 esté en la lista blanca');
+      console.error('Detalles del error de selección de servidor:', {
+        reason: error.reason,
+        code: error.code
+      });
+    } else if (error.name === 'MongoServerError' && error.code === 8000) {
+      console.error('Error de autenticación: Las credenciales proporcionadas no son correctas.');
+      console.error('Por favor, verifica tu nombre de usuario y contraseña en la URI de MongoDB.');
     }
   }
-}
+};
 
-testConnection(); 
+// Ejecutar la prueba
+testMongoDBConnection(); 

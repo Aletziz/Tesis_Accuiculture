@@ -18,6 +18,7 @@ const connectDB = async () => {
     if (MONGODB_URI.includes('<db_password>')) {
       console.error('Error: La URI de MongoDB contiene un placeholder de contraseña.');
       console.error('Por favor, reemplaza <db_password> en tu archivo .env con tu contraseña real de MongoDB Atlas.');
+      console.error('Ejemplo: MONGODB_URI=mongodb+srv://usuario:contraseña_real@cluster.mongodb.net/database');
       return false;
     }
 
@@ -28,16 +29,28 @@ const connectDB = async () => {
     const options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // Reducido a 5 segundos para fallar más rápido
+      serverSelectionTimeoutMS: 30000, // Aumentado a 30 segundos
       socketTimeoutMS: 45000,
-      connectTimeoutMS: 10000, // Reducido a 10 segundos
+      connectTimeoutMS: 30000, // Aumentado a 30 segundos
       retryWrites: true,
       retryReads: true,
       maxPoolSize: 10,
-      minPoolSize: 5
+      minPoolSize: 5,
+      // Añadir opciones específicas para replica sets
+      replicaSet: 'atlas-3i59kx-shard-0',
+      readPreference: 'primaryPreferred',
+      // Añadir opciones de SSL
+      ssl: true,
+      sslValidate: true
     };
 
-    console.log('Intentando conectar a MongoDB...');
+    console.log('Intentando conectar a MongoDB con las siguientes opciones:');
+    console.log('- Timeout de selección de servidor: 30 segundos');
+    console.log('- Timeout de conexión: 30 segundos');
+    console.log('- Replica set: atlas-3i59kx-shard-0');
+    console.log('- Read preference: primaryPreferred');
+    console.log('- SSL: habilitado');
+
     await mongoose.connect(MONGODB_URI, options);
     console.log('MongoDB conectado exitosamente');
     return true;
@@ -46,13 +59,21 @@ const connectDB = async () => {
     
     // Manejar errores específicos
     if (error.name === 'MongooseServerSelectionError') {
+      console.error('Detalles del error de selección de servidor:', {
+        reason: error.reason,
+        code: error.code
+      });
+      
+      // Sugerencias adicionales para resolver el problema
       console.error('\nSugerencias para resolver el problema:');
-      console.error('1. Verifica tu conexión a internet');
-      console.error('2. Asegúrate de que el clúster de MongoDB Atlas esté activo');
-      console.error('3. Verifica que la URI de conexión sea correcta');
-      console.error('4. Intenta usar el comando ping para verificar la conectividad:');
-      console.error('   ping tesis.bhhr20s.mongodb.net');
-      console.error('5. Verifica que no haya un firewall bloqueando la conexión');
+      console.error('1. Verifica que el clúster de MongoDB Atlas esté activo y funcionando');
+      console.error('2. Asegúrate de que la URI de conexión sea correcta');
+      console.error('3. Verifica que el nombre de usuario y la contraseña sean correctos');
+      console.error('4. Comprueba que el nombre del clúster en la URI coincida con el clúster real');
+      console.error('5. Intenta conectarte desde otra red (por ejemplo, usando datos móviles)');
+    } else if (error.name === 'MongoServerError' && error.code === 8000) {
+      console.error('Error de autenticación: Las credenciales proporcionadas no son correctas.');
+      console.error('Por favor, verifica tu nombre de usuario y contraseña en la URI de MongoDB.');
     }
     
     return false;
@@ -78,8 +99,8 @@ process.on('SIGINT', async () => {
     await mongoose.connection.close();
     console.log('Conexión a MongoDB cerrada por terminación de la aplicación');
     process.exit(0);
-  } catch (error) {
-    console.error('Error al cerrar la conexión:', error);
+  } catch (err) {
+    console.error('Error al cerrar la conexión:', err);
     process.exit(1);
   }
 });
