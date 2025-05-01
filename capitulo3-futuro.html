@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Futuras Investigaciones - Capítulo 3</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/thesis-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -15,29 +16,30 @@
             </button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="galeria.html">Galería</a></li>
-                <li><a href="audiovisuales.html">Audiovisuales</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="admin.html">Admin</a></li>
+                <li><a href="capitulo1.html">Capítulo 1</a></li>
+                <li><a href="capitulo2.html">Capítulo 2</a></li>
+                <li><a href="capitulo3.html" class="active">Capítulo 3</a></li>
+                <li><a href="capitulo4.html">Capítulo 4</a></li>
+                <li><a href="capitulo5.html">Capítulo 5</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="content-box">
-            <a href="capitulo3.html" class="back-link">← Volver a Capítulo 3</a>
+    <div class="container" contenteditable="true">
+        <div class="content-box" contenteditable="true">
+            <a href="capitulo3.html" class="back-link" contenteditable="true">← Volver a Capítulo 3</a>
 
-            <h1 class="editable-content">Futuras Investigaciones</h1>
+            <h1 class="editable-content" contenteditable="true">Futuras Investigaciones</h1>
 
-            <div class="chapter-text">
-                <p class="editable-content">
+            <div class="content-section" contenteditable="true">
+                <div class="editable-content" contenteditable="true">
                     [Aquí puedes escribir el contenido sobre futuras investigaciones. Este texto será editable cuando estés en modo administrador.]
-                </p>
+                </div>
             </div>
 
-            <div class="navigation-buttons">
-                <a href="capitulo3-limitaciones.html" class="nav-button">← Sección Anterior</a>
-                <a href="capitulo3.html" class="nav-button">Volver al Capítulo →</a>
+            <div class="navigation-buttons" contenteditable="true">
+                <a href="capitulo3-limitaciones.html" class="nav-button" contenteditable="true">← Sección Anterior</a>
+                <a href="capitulo3.html" class="nav-button" contenteditable="true">Volver al Capítulo →</a>
             </div>
         </div>
     </div>
@@ -45,7 +47,6 @@
     <script>
         const navToggle = document.getElementById("navToggle");
         const navMenu = document.getElementById("navMenu");
-
         navToggle.addEventListener("click", () => {
             navMenu.classList.toggle("active");
         });
