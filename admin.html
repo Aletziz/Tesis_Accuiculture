@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panel de Administración - Tesis</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
       .admin-panel {
         display: none;
@@ -14,106 +17,137 @@
       }
       .file-list {
         margin-bottom: 20px;
-        padding: 10px;
-        background: #f5f5f5;
-        border-radius: 5px;
+        padding: 20px;
+        background: rgba(26, 47, 56, 0.8);
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--input-border);
+        backdrop-filter: blur(10px);
       }
       .file-item {
-        padding: 10px;
-        margin: 5px 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 3px;
+        padding: 15px;
+        margin: 10px 0;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--input-border);
+        border-radius: 8px;
         cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--text-light);
       }
       .file-item:hover {
-        background: #f0f0f0;
+        background: rgba(64, 181, 188, 0.2);
+        transform: translateY(-2px);
       }
       .editor-container {
         display: none;
         margin-top: 20px;
       }
       .editor-toolbar {
-        margin-bottom: 10px;
-        padding: 10px;
-        background: #f0f0f0;
-        border-radius: 5px;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: rgba(26, 47, 56, 0.8);
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--input-border);
+        backdrop-filter: blur(10px);
       }
       .editor-toolbar button {
-        margin-right: 5px;
-        padding: 5px 10px;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 3px;
+        margin-right: 10px;
+        padding: 8px 16px;
+        background: var(--primary-color);
+        color: #1a2f38;
+        border: none;
+        border-radius: 8px;
         cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
       }
       .editor-toolbar button:hover {
-        background: #e0e0e0;
+        background: var(--primary-dark);
+        transform: translateY(-2px);
       }
       .editor-content {
         width: 100%;
         min-height: 500px;
         padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        background: #fff;
+        background: rgba(26, 47, 56, 0.8);
+        border: 1px solid var(--input-border);
+        border-radius: 15px;
+        color: var(--text-light);
+        font-size: 1rem;
+        line-height: 1.6;
         overflow-y: auto;
+        backdrop-filter: blur(10px);
       }
       .save-button {
-        margin-top: 10px;
-        padding: 10px 20px;
-        background: #4CAF50;
-        color: white;
+        margin-top: 20px;
+        padding: 12px 24px;
+        background: var(--primary-color);
+        color: #1a2f38;
         border: none;
-        border-radius: 3px;
+        border-radius: 8px;
         cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
       }
       .save-button:hover {
-        background: #45a049;
+        background: var(--primary-dark);
+        transform: translateY(-2px);
       }
       .logout-button {
         position: absolute;
         top: 20px;
         right: 20px;
-        padding: 10px 20px;
+        padding: 12px 24px;
         background: #f44336;
         color: white;
         border: none;
-        border-radius: 3px;
+        border-radius: 8px;
         cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
       }
       .logout-button:hover {
         background: #da190b;
+        transform: translateY(-2px);
       }
       /* Estilos para el editor de contenido */
       .content-editor {
         padding: 20px;
-        background: #f8f9fa;
-        border-radius: 5px;
+        background: rgba(26, 47, 56, 0.8);
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--input-border);
+        backdrop-filter: blur(10px);
       }
       .content-editor h3 {
-        margin-bottom: 15px;
-        color: #333;
+        margin-bottom: 20px;
+        color: var(--primary-color);
       }
       .editor-section {
-        background: white;
+        background: rgba(255, 255, 255, 0.05);
         padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        border: 1px solid var(--input-border);
+        border-radius: 15px;
+        color: var(--text-light);
       }
       /* Estilos para elementos editables */
       [contenteditable="true"] {
-        outline: 1px dashed #007bff;
-        padding: 2px 4px;
-        margin: 2px 0;
+        outline: 1px dashed var(--primary-color);
+        padding: 4px 8px;
+        margin: 4px 0;
         min-height: 20px;
+        border-radius: 4px;
       }
       [contenteditable="true"]:hover {
-        background-color: #f0f7ff;
+        background-color: rgba(64, 181, 188, 0.1);
       }
       [contenteditable="true"]:focus {
-        outline: 2px solid #007bff;
-        background-color: #e6f2ff;
+        outline: 2px solid var(--primary-color);
+        background-color: rgba(64, 181, 188, 0.2);
       }
       /* Estilos para mejorar la visualización del contenido */
       .editor-section h1, 
@@ -122,40 +156,115 @@
       .editor-section h4, 
       .editor-section h5, 
       .editor-section h6 {
-        margin-top: 15px;
-        margin-bottom: 10px;
-        color: #333;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        color: var(--primary-color);
       }
       .editor-section p {
-        margin-bottom: 10px;
-        line-height: 1.5;
+        margin-bottom: 15px;
+        line-height: 1.6;
       }
       .editor-section ul, 
       .editor-section ol {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         padding-left: 20px;
       }
       .editor-section img {
         max-width: 100%;
         height: auto;
-        margin: 10px 0;
+        margin: 15px 0;
+        border-radius: 8px;
       }
       .editor-section table {
         width: 100%;
         border-collapse: collapse;
-        margin: 10px 0;
+        margin: 15px 0;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        overflow: hidden;
       }
       .editor-section table th, 
       .editor-section table td {
-        border: 1px solid #ddd;
-        padding: 8px;
+        border: 1px solid var(--input-border);
+        padding: 12px;
+        color: var(--text-light);
       }
       .editor-section table th {
-        background-color: #f5f5f5;
+        background-color: rgba(64, 181, 188, 0.2);
+        font-weight: 500;
+      }
+      .back-to-home {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: rgba(26, 47, 56, 0.9);
+        color: var(--text-light);
+        border: 1px solid rgba(64, 181, 188, 0.3);
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+      }
+
+      .back-to-home:hover {
+        transform: translateY(-5px) scale(1.05);
+        background: rgba(64, 181, 188, 0.2);
+        border-color: var(--primary-color);
+        box-shadow: 0 8px 25px rgba(64, 181, 188, 0.4);
+      }
+
+      .back-to-home i {
+        transition: all 0.3s ease;
+        color: var(--primary-color);
+        font-size: 1.2rem;
+      }
+
+      .back-to-home:hover i {
+        transform: translateX(-5px);
+        color: var(--text-light);
+      }
+
+      @media (max-width: 768px) {
+        .back-to-home {
+          bottom: 20px;
+          right: 20px;
+          padding: 12px 20px;
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .back-to-home {
+          bottom: 15px;
+          right: 15px;
+          padding: 10px 15px;
+          font-size: 0.8rem;
+        }
+        
+        .back-to-home span {
+          display: none;
+        }
+        
+        .back-to-home i {
+          margin: 0;
+          font-size: 1.1rem;
+        }
       }
     </style>
   </head>
   <body>
+    <button class="back-to-home" onclick="window.location.href='index.html'">
+      <i class="fas fa-home"></i>
+      <span>Volver al Inicio</span>
+    </button>
     <div class="login-container" id="loginContainer">
       <div class="login-box">
         <h2>Acceso Administrativo</h2>
@@ -171,7 +280,7 @@
               required
             />
           </div>
-          <button type="submit" class="login-button">Iniciar Sesión</button>
+          <button type="submit" class="admin-button">Iniciar Sesión</button>
         </form>
       </div>
     </div>

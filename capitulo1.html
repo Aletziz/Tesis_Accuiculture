@@ -1,79 +1,79 @@
-<html lang="es"><head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capítulo 1: Generalidades</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Capítulo 1 - Tesis Acuicultura</title>
+    <link rel="stylesheet" href="css/thesis-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  </head>
-  <body>
-    
+</head>
+<body>
     <nav class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
-        <button class="nav-toggle" id="navToggle">
-          <i class="fas fa-bars"></i>
-        </button>
-        <ul class="nav-menu" id="navMenu">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="galeria.html">Galería</a></li>
-          <li><a href="audiovisuales.html">Audiovisuales</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-          <li><a href="admin.html">Admin</a></li>
-        </ul>
-      </div>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="capitulo1.html" class="active">Capítulo 1</a></li>
+                <li><a href="capitulo2.html">Capítulo 2</a></li>
+                <li><a href="capitulo3.html">Capítulo 3</a></li>
+                <li><a href="capitulo4.html">Capítulo 4</a></li>
+                <li><a href="capitulo5.html">Capítulo 5</a></li>
+            </ul>
+        </div>
     </nav>
 
     <div class="container">
-      <div class="content-box">
-        <a href="index.html" class="back-link">← Volver al Índice</a>
+        <div class="content-box">
+            <a href="index.html" class="back-link">← Volver al Inicio</a>
 
-        <h1 class="editable-content">Capítulo 1: Generalidades</h1>
+            <h1>Capítulo 1: Generalidades</h1>
 
-        <div class="sections-container">
-          <a href="capitulo1-ecosistema.html" class="section-button">
-            <div class="section">
-              <h3 class="editable-content">Ecosistema</h3>
-              <p class="editable-content">Conceptos fundamentales y componentes</p>
+            <div class="sections-container">
+                <a href="capitulo1-ecosistemas.html" class="section-button">
+                    <div class="section">
+                        <h3>Ecosistemas</h3>
+                        <p>Análisis de los diferentes ecosistemas acuáticos y su relación con la acuicultura.</p>
+                    </div>
+                </a>
+                
+                <a href="capitulo1-caracteristicas.html" class="section-button">
+                    <div class="section">
+                        <h3>Características Físicas</h3>
+                        <p>Descripción de las características físicas de los ambientes acuáticos.</p>
+                    </div>
+                </a>
+                
+                <a href="capitulo1-paisajes.html" class="section-button">
+                    <div class="section">
+                        <h3>Paisajes</h3>
+                        <p>Estudio de los paisajes acuáticos y su importancia en la acuicultura.</p>
+                    </div>
+                </a>
+
+                <a href="capitulo1-mitigacion.html" class="section-button">
+                    <div class="section">
+                        <h3>Mitigación</h3>
+                        <p>Estrategias y medidas para la mitigación de impactos ambientales.</p>
+                    </div>
+                </a>
             </div>
-          </a>
 
-          <a href="capitulo1-caracteristicas.html" class="section-button">
-            <div class="section">
-              <h3 class="editable-content">Características Físicas</h3>
-              <p class="editable-content">Aspectos geográficos y climáticos</p>
+            <div class="navigation-buttons">
+                <a href="index.html" class="nav-button">← Volver al Índice</a>
+                <a href="capitulo2.html" class="nav-button">Siguiente Capítulo →</a>
             </div>
-          </a>
-
-          <a href="capitulo1-paisaje.html" class="section-button">
-            <div class="section">
-              <h3 class="editable-content">Paisaje</h3>
-              <p class="editable-content">Elementos y estructura del paisaje</p>
-            </div>
-          </a>
-
-          <a href="capitulo1-mitigacion.html" class="section-button">
-            <div class="section">
-              <h3 class="editable-content">Mitigación</h3>
-              <p class="editable-content">Estrategias y acciones de mitigación</p>
-            </div>
-          </a>
         </div>
-
-        <div class="navigation-buttons">
-          <a href="index.html" class="nav-button">← Volver al Índice</a>
-          <a href="capitulo2.html" class="nav-button">Siguiente Capítulo →</a>
-        </div>
-      </div>
     </div>
 
     <script>
-      const navToggle = document.getElementById("navToggle");
-      const navMenu = document.getElementById("navMenu");
-
-      navToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-      });
+        const navToggle = document.getElementById("navToggle");
+        const navMenu = document.getElementById("navMenu");
+        navToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
     </script>
-  
-
-</body></html>
+</body>
+</html>
