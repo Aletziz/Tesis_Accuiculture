@@ -1,0 +1,832 @@
+/* Variables de color basadas en la imagen */
+:root {
+    --primary-color: #1a2f38;    /* Azul marino oscuro */
+    --secondary-color: #40b5bc;  /* Turquesa */
+    --accent-color: #9eca66;     /* Verde lima */
+    --dark-accent: #153740;      /* Azul oscuro */
+    --light-accent: #e0f2f1;     /* Turquesa claro */
+    --text-color: #2d3436;
+    --white: #ffffff;
+    --transition-speed: 0.3s;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Inter', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Fondo animado ajustado */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(64, 181, 188, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(158, 202, 102, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(21, 55, 64, 0.6) 0%, var(--primary-color) 100%);
+    animation: backgroundFlow 20s ease-in-out infinite alternate;
+    z-index: -1;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes backgroundFlow {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color) 0%,
+        rgba(26, 47, 56, 0.95) 50%,
+        rgba(26, 47, 56, 0.90) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientFlow 15s ease infinite;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+    animation: glowPulse 3s infinite;
+    position: relative;
+}
+
+.hero-title::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: linear-gradient(90deg, var(--secondary-color), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: lineGrow 1s ease-out 1s forwards;
+}
+
+@keyframes lineGrow {
+    to { transform: scaleX(1); }
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--light-accent);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: slideInLeft 1s ease-out 0.2s forwards, float 6s ease-in-out infinite;
+}
+
+.hero-image-container {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: 100%;
+}
+
+.hero-image-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(64, 181, 188, 0.2) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: ripple 3s ease-out infinite;
+    z-index: 2;
+}
+
+.hero-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: scaleIn 1.5s ease-out;
+    transition: transform 0.3s ease;
+}
+
+.hero-image-container:hover .hero-image {
+    transform: scale(1.05);
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to left,
+        rgba(26, 47, 56, 0.2) 0%,
+        rgba(26, 47, 56, 0.4) 100%
+    );
+    z-index: 2;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(1.1);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+/* Navbar mejorado */
+.navbar {
+    background-color: rgba(21, 55, 64, 0.95);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-menu li a {
+    color: var(--light-accent);
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-menu li a:hover {
+    color: var(--secondary-color);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--light-accent);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Media queries para responsividad del navbar */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: rgba(21, 55, 64, 0.98);
+        padding: 1rem 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-menu li a {
+        display: block;
+        padding: 1rem;
+    }
+}
+
+/* Contenido principal */
+.main-content {
+    position: relative;
+    z-index: 4;
+    background-color: var(--primary-color);
+    padding: 4rem 2rem;
+    animation: pageTransitionIn 0.6s ease-out forwards;
+}
+
+/* Capítulos */
+.chapters {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.chapter {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.chapter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.chapter:hover::before {
+    left: 100%;
+}
+
+.chapter:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.chapter h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.chapter p {
+    color: var(--light-accent);
+    margin: 0.5rem 0;
+}
+
+.chapter small {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+}
+
+.chapter-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(64, 181, 188, 0.2);
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all var(--transition-speed);
+}
+
+.chapter-link:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+/* Información del autor */
+.author-info {
+    text-align: center;
+    color: var(--light-accent);
+    margin-top: 4rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter {
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: calc(var(--animation-order) * 0.1s);
+}
+
+/* Animaciones adicionales */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes glowPulse {
+    0% {
+        text-shadow: 0 0 10px rgba(0, 100, 255, 0.1);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(0, 100, 255, 0.3),
+                      0 0 30px rgba(0, 100, 255, 0.2);
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(0, 100, 255, 0.1);
+    }
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Efecto de partículas en el hero */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+    25% {
+        transform: translateY(-100px) translateX(50px);
+    }
+    50% {
+        transform: translateY(-200px) translateX(-50px);
+    }
+    75% {
+        transform: translateY(-300px) translateX(25px);
+    }
+    100% {
+        transform: translateY(-400px) translateX(0);
+        opacity: 0;
+    }
+}
+
+/* Actualizar nav-logo con efecto de brillo */
+.nav-logo {
+    position: relative;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color), var(--secondary-color));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 3s linear infinite;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Media queries para responsividad */
+@media (max-width: 1024px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .hero-content {
+        padding: 6rem 2rem 4rem;
+        text-align: center;
+    }
+
+    .hero-image-container {
+        height: 50vh;
+        order: -1;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+}
+
+/* Estilos para el contenido de los capítulos */
+.chapter-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.chapter-title {
+    color: var(--secondary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.chapter-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+.chapter-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+    perspective: 1000px;
+}
+
+.section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: calc(var(--animation-order, 0) * 0.2s);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.section:hover {
+    backdrop-filter: blur(8px);
+    transform: translateY(-5px) scale(1.02) rotateX(2deg);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.section h2 {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.section p {
+    color: var(--light-accent);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.section-link {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: rgba(64, 181, 188, 0.2);
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(64, 181, 188, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-link:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.section-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--secondary-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.section-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.section:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at var(--x, 50%) var(--y, 50%),
+        rgba(64, 181, 188, 0.1) 0%,
+        transparent 60%
+    );
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.section:hover::before {
+    opacity: 1;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-button {
+    padding: 0.75rem 1.5rem;
+    background-color: rgba(64, 181, 188, 0.2);
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(64, 181, 188, 0.3);
+    animation: slideInRight 0.6s ease-out forwards;
+    animation-delay: calc(var(--animation-order, 0) * 0.2s);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.nav-button:hover::before {
+    transform: translateX(100%);
+}
+
+/* Estilos para elementos editables */
+.editable-content {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.edit-button {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    padding: 0.25rem 1rem;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+}
+
+.editable-content:hover .edit-button {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .chapter-title {
+        font-size: 2rem;
+    }
+
+    .chapter-sections {
+        grid-template-columns: 1fr;
+    }
+
+    .navigation-buttons {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .nav-menu {
+        transform: translateX(100%);
+    }
+    
+    .nav-menu.active {
+        animation: slideInMenu 0.3s ease-out forwards;
+    }
+}
+
+@keyframes slideInMenu {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Animaciones mejoradas */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Efecto de brillo en hover */
+.nav-logo:hover {
+    text-shadow: 0 0 10px rgba(64, 181, 188, 0.5),
+                 0 0 20px rgba(64, 181, 188, 0.3);
+}
+
+/* Animación para el menú móvil */
+.nav-menu {
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-menu.active {
+    transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        transform: translateX(100%);
+    }
+    
+    .nav-menu.active {
+        animation: slideInMenu 0.3s ease-out forwards;
+    }
+}
+
+@keyframes slideInMenu {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Animación para los botones de edición */
+.edit-button {
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.editable-content:hover .edit-button {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Transiciones de página */
+@keyframes pageTransitionIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* Efecto de transición al salir */
+.page-exit {
+    animation: pageTransitionOut 0.4s ease-in forwards;
+}
+
+@keyframes pageTransitionOut {
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+        filter: blur(10px);
+    }
+}
+
+/* Ajuste de la opacidad del fondo en scroll */
+@media (min-width: 768px) {
+    body::before {
+        opacity: var(--scroll-opacity, 0.8);
+    }
+} 
