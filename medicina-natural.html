@@ -1,8 +1,10 @@
-<html lang="es"><head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicina Natural y Tradicional</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Medicina Natural - Tesis Acuicultura</title>
+    <link rel="stylesheet" href="css/thesis-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -14,28 +16,45 @@
             </button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="galeria.html">Galería</a></li>
-                <li><a href="audiovisuales.html">Audiovisuales</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="admin.html">Admin</a></li>
+                <li><a href="capitulo1.html">Capítulo 1</a></li>
+                <li><a href="capitulo2.html">Capítulo 2</a></li>
+                <li><a href="capitulo3.html">Capítulo 3</a></li>
+                <li><a href="capitulo4.html">Capítulo 4</a></li>
+                <li><a href="capitulo5.html">Capítulo 5</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="container" contenteditable="true">
-        <div class="content-box" contenteditable="true">
-            <a href="capitulo5.html" class="back-link" contenteditable="true">← Volver al Capítulo 5</a>
+    <div class="container">
+        <div class="content-box">
+            <a href="capitulo5.html" class="back-link">← Volver al Capítulo 5</a>
 
-            <h1 class="editable-content" contenteditable="true">Medicina Natural y Tradicional</h1>
+            <h1>Medicina Natural</h1>
 
-            <div class="chapter-text" contenteditable="true">
-                <p class="editable-content" contenteditable="true">
-                    [Aquí puedes escribir el contenido sobre medicina natural y tradicional. Este texto será editable cuando estés en modo administrador.]aaaaaaaa</p>
+            <div class="content-section">
+                <p>La medicina natural representa un enfoque holístico para el tratamiento y prevención de enfermedades, utilizando recursos naturales y métodos tradicionales que han sido transmitidos a través de generaciones.</p>
+                
+                <h2>Beneficios de la Medicina Natural</h2>
+                <ul>
+                    <li>Menor riesgo de efectos secundarios</li>
+                    <li>Enfoque holístico del tratamiento</li>
+                    <li>Accesibilidad y costos reducidos</li>
+                    <li>Promoción de la salud preventiva</li>
+                </ul>
+
+                <h2>Aplicaciones Principales</h2>
+                <p>La medicina natural se utiliza en diversos contextos terapéuticos, incluyendo:</p>
+                <ul>
+                    <li>Tratamiento de enfermedades crónicas</li>
+                    <li>Manejo del estrés y ansiedad</li>
+                    <li>Fortalecimiento del sistema inmunológico</li>
+                    <li>Mejora del bienestar general</li>
+                </ul>
             </div>
 
-            <div class="navigation-buttons" contenteditable="true">
-                <a href="capitulo5.html" class="nav-button" contenteditable="true">← Volver al Capítulo</a>
-                <a href="medicina-acupuntura.html" class="nav-button" contenteditable="true">Siguiente Sección →</a>
+            <div class="navigation-buttons">
+                <a href="capitulo5.html" class="nav-button">← Volver al Índice</a>
+                <a href="medicina-fitoterapia.html" class="nav-button">Siguiente Sección →</a>
             </div>
         </div>
     </div>
@@ -43,10 +62,9 @@
     <script>
         const navToggle = document.getElementById("navToggle");
         const navMenu = document.getElementById("navMenu");
-
         navToggle.addEventListener("click", () => {
             navMenu.classList.toggle("active");
         });
     </script>
-
-</body></html>
+</body>
+</html>

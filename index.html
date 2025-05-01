@@ -4,24 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tesis de Acuicultura</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="css/modern-styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="css/thesisEditor.css">
     <script src="js/thesisEditor.js"></script>
   </head>
   <body>
-    
     <nav class="navbar">
       <div class="nav-container">
         <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
-        <button class="nav-toggle" id="navToggle">
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
           <i class="fas fa-bars"></i>
         </button>
         <ul class="nav-menu" id="navMenu">
-          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html" class="active">Inicio</a></li>
           <li><a href="galeria.html">Galería</a></li>
           <li><a href="audiovisuales.html">Audiovisuales</a></li>
           <li><a href="contacto.html">Contacto</a></li>
@@ -30,125 +26,145 @@
       </div>
     </nav>
 
-    <div class="container">
-      <div class="content-box">
-        <h1>Desarrollo de Sistemas de Acuicultura Sostenible</h1>
+    <!-- Hero Section con la imagen a la derecha -->
+    <section class="hero-section">
+      <div class="particles" id="particles"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">Desarrollo de Sistemas de Acuicultura Sostenible</h1>
+        <p class="hero-subtitle">Innovación y Sostenibilidad en la Producción Acuícola</p>
+      </div>
+      <div class="hero-image-container">
+        <div class="hero-overlay"></div>
+        <img src="Leonardo_Phoenix_10_Estilo_tcnico_y_minimalista_similar_a_las_2.jpg" alt="Sistema de Acuicultura" class="hero-image">
+      </div>
+    </section>
 
-        <div class="sections-container chapters">
-          <div class="section" data-page-id="introduccion">
-            <div class="chapter-text" id="introduccion-content">
-              <h3>Introducción</h3>
-              <p>Fundamentos y Marco Teórico</p>
-            </div>
-            <a href="introduccion.html" class="chapter-link">Ver más</a>
+    <!-- Contenido Principal -->
+    <main class="main-content">
+      <div class="chapters">
+        <div class="chapter" style="--animation-order: 1">
+          <div class="chapter-text" id="introduccion-content">
+            <h3>Introducción</h3>
+            <p>Fundamentos y Marco Teórico</p>
+            <small>Base conceptual de la investigación</small>
           </div>
+          <a href="introduccion.html" class="chapter-link">Ver más</a>
         </div>
 
-        <div class="chapters">
-          <h2>Índice</h2>
-          <div class="chapter">
-            <div class="chapter-text" id="capitulo1-content">
-              <h3>Capítulo 1</h3>
-              <p>Generalidades</p>
-              <small>Fundamentos y conceptos básicos</small>
-            </div>
-            <a href="capitulo1.html" class="chapter-link">Ver más</a>
+        <div class="chapter" style="--animation-order: 2">
+          <div class="chapter-text" id="capitulo1-content">
+            <h3>Capítulo 1</h3>
+            <p>Generalidades</p>
+            <small>Fundamentos y conceptos básicos</small>
           </div>
-
-          <div class="chapter">
-            <div class="chapter-text" id="capitulo2-content">
-              <h3>Capítulo 2</h3>
-              <p>Diversidad Biológica</p>
-              <small>Análisis de la biodiversidad del área</small>
-            </div>
-            <a href="capitulo2.html" class="chapter-link">Ver más</a>
-          </div>
-
-          <div class="chapter">
-            <div class="chapter-text" id="capitulo3-content">
-              <h3>Capítulo 3</h3>
-              <p>Ecosistemas Terrestres</p>
-              <small>Estudio de los ecosistemas y su dinámica</small>
-            </div>
-            <a href="capitulo3.html" class="chapter-link">Ver más</a>
-          </div>
-
-          <div class="chapter">
-            <div class="chapter-text" id="capitulo4-content">
-              <h3>Capítulo 4</h3>
-              <p>Cambio Climático</p>
-              <small>Impacto y adaptación al cambio climático</small>
-            </div>
-            <a href="capitulo4.html" class="chapter-link">Ver más</a>
-          </div>
-
-          <div class="chapter">
-            <div class="chapter-text" id="capitulo5-content">
-              <h3>Capítulo 5</h3>
-              <p>Tradiciones</p>
-              <small>Aspectos culturales y tradicionales de la región</small>
-            </div>
-            <a href="capitulo5.html" class="chapter-link">Ver más</a>
-          </div>
-
-          <div class="chapter">
-            <div class="chapter-text" id="capitulo6-content">
-              <h3>Capítulo 6</h3>
-              <p>CBC</p>
-              <small>Conservación Basada en Comunidades</small>
-            </div>
-            <a href="capitulo6.html" class="chapter-link">Ver más</a>
-          </div>
+          <a href="capitulo1.html" class="chapter-link">Ver más</a>
         </div>
 
-        <div class="author-info">
-          <div class="chapter-text" id="author-content">
-            <p>Presentado por: [Tu Nombre]</p>
-            <p>Director de Tesis: [Nombre del Director]</p>
-            <p>Universidad [Nombre de la Universidad]</p>
-            <p>Facultad de Ciencias Marinas</p>
-            <p>2024</p>
+        <div class="chapter" style="--animation-order: 3">
+          <div class="chapter-text" id="capitulo2-content">
+            <h3>Capítulo 2</h3>
+            <p>Diversidad Biológica</p>
+            <small>Análisis de la biodiversidad del área</small>
           </div>
+          <a href="capitulo2.html" class="chapter-link">Ver más</a>
+        </div>
+
+        <div class="chapter" style="--animation-order: 4">
+          <div class="chapter-text" id="capitulo3-content">
+            <h3>Capítulo 3</h3>
+            <p>Ecosistemas Terrestres</p>
+            <small>Estudio de los ecosistemas y su dinámica</small>
+          </div>
+          <a href="capitulo3.html" class="chapter-link">Ver más</a>
+        </div>
+
+        <div class="chapter" style="--animation-order: 5">
+          <div class="chapter-text" id="capitulo4-content">
+            <h3>Capítulo 4</h3>
+            <p>Cambio Climático</p>
+            <small>Impacto y adaptación al cambio climático</small>
+          </div>
+          <a href="capitulo4.html" class="chapter-link">Ver más</a>
+        </div>
+
+        <div class="chapter" style="--animation-order: 6">
+          <div class="chapter-text" id="capitulo5-content">
+            <h3>Capítulo 5</h3>
+            <p>Tradiciones</p>
+            <small>Aspectos culturales y tradicionales de la región</small>
+          </div>
+          <a href="capitulo5.html" class="chapter-link">Ver más</a>
+        </div>
+
+        <div class="chapter" style="--animation-order: 7">
+          <div class="chapter-text" id="capitulo6-content">
+            <h3>Capítulo 6</h3>
+            <p>CBC</p>
+            <small>Conservación Basada en Comunidades</small>
+          </div>
+          <a href="capitulo6.html" class="chapter-link">Ver más</a>
         </div>
       </div>
-    </div>
+
+      <div class="author-info">
+        <div class="chapter-text" id="author-content">
+          <p>Presentado por: [Tu Nombre]</p>
+          <p>Director de Tesis: [Nombre del Director]</p>
+          <p>Universidad [Nombre de la Universidad]</p>
+          <p>Facultad de Ciencias Marinas</p>
+          <p>2024</p>
+        </div>
+      </div>
+    </main>
 
     <script>
+      // Mejorar la navegación móvil
       const navToggle = document.getElementById("navToggle");
       const navMenu = document.getElementById("navMenu");
+      
       navToggle.addEventListener("click", () => {
         navMenu.classList.toggle("active");
+        // Cambiar el ícono cuando se abre/cierra el menú
+        const icon = navToggle.querySelector("i");
+        icon.classList.toggle("fa-bars");
+        icon.classList.toggle("fa-times");
       });
-    </script>
-    <!-- Agrega esto después del nav -->
-    <div class="admin-controls" style="display: none">
-      <button onclick="logout()" class="admin-button">Cerrar Sesión</button>
-    </div>
 
-    <!-- Modifica cada sección editable así: -->
-    
-    </div>
-    <!-- Agregar antes de cerrar el body -->
-    <script>
+      // Cerrar el menú al hacer clic en un enlace
+      document.querySelectorAll(".nav-menu a").forEach(link => {
+        link.addEventListener("click", () => {
+          navMenu.classList.remove("active");
+          const icon = navToggle.querySelector("i");
+          icon.classList.add("fa-bars");
+          icon.classList.remove("fa-times");
+        });
+      });
+
+      // Cerrar el menú al hacer clic fuera de él
+      document.addEventListener("click", (e) => {
+        if (!navMenu.contains(e.target) && !navToggle.contains(e.target) && navMenu.classList.contains("active")) {
+          navMenu.classList.remove("active");
+          const icon = navToggle.querySelector("i");
+          icon.classList.add("fa-bars");
+          icon.classList.remove("fa-times");
+        }
+      });
+
       // Verificar si es administrador
       document.addEventListener("DOMContentLoaded", function () {
         const isAdmin = localStorage.getItem("isAdmin") === "true";
 
         if (isAdmin) {
-          // Agregar botón de cerrar sesión
           const nav = document.querySelector(".nav-menu");
           const logoutBtn = document.createElement("li");
-          logoutBtn.innerHTML =
-            '<a href="#" onclick="logout()">Cerrar Sesión</a>';
+          logoutBtn.innerHTML = '<a href="#" onclick="logout()">Cerrar Sesión</a>';
           nav.appendChild(logoutBtn);
 
-          // Hacer contenido editable
           document.querySelectorAll(".chapter-text").forEach((element) => {
             const editBtn = document.createElement("button");
             editBtn.className = "edit-button";
             editBtn.innerHTML = "Editar";
             editBtn.onclick = () => makeEditable(element);
-
             element.parentNode.insertBefore(editBtn, element);
           });
         }
@@ -159,7 +175,6 @@
           element.contentEditable = "false";
           element.style.border = "none";
           element.previousElementSibling.innerHTML = "Editar";
-          // Aquí podrías agregar código para guardar los cambios
         } else {
           element.contentEditable = "true";
           element.style.border = "2px dashed #007bff";
@@ -171,17 +186,38 @@
         localStorage.removeItem("isAdmin");
         window.location.reload();
       }
-    </script>
-    <!-- Reemplaza los scripts al final del body con esto: -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-      const navToggle = document.getElementById("navToggle");
-      const navMenu = document.getElementById("navMenu");
 
-      navToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-      });
+      // Sistema de partículas
+      function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const numberOfParticles = 50;
+
+        for (let i = 0; i < numberOfParticles; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          
+          // Posición aleatoria
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.top = Math.random() * 100 + '%';
+          
+          // Tamaño aleatorio
+          const size = Math.random() * 4 + 2;
+          particle.style.width = size + 'px';
+          particle.style.height = size + 'px';
+          
+          // Duración aleatoria
+          const duration = Math.random() * 20 + 10;
+          particle.style.animation = `particleFloat ${duration}s infinite linear`;
+          
+          // Retraso aleatorio
+          particle.style.animationDelay = -Math.random() * 20 + 's';
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // Iniciar sistema de partículas cuando se carga la página
+      document.addEventListener('DOMContentLoaded', createParticles);
     </script>
-    <script src="main.js"></script>
   </body>
 </html>

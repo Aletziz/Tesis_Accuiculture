@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acupuntura - Capítulo 5</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Acupuntura - Tesis Acuicultura</title>
+    <link rel="stylesheet" href="css/thesis-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -15,29 +16,54 @@
             </button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="galeria.html">Galería</a></li>
-                <li><a href="audiovisuales.html">Audiovisuales</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="admin.html">Admin</a></li>
+                <li><a href="capitulo1.html">Capítulo 1</a></li>
+                <li><a href="capitulo2.html">Capítulo 2</a></li>
+                <li><a href="capitulo3.html">Capítulo 3</a></li>
+                <li><a href="capitulo4.html">Capítulo 4</a></li>
+                <li><a href="capitulo5.html">Capítulo 5</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
         <div class="content-box">
-            <a href="capitulo5.html" class="back-link">← Volver a Capítulo 5</a>
+            <a href="capitulo5.html" class="back-link">← Volver al Capítulo 5</a>
 
-            <h1 class="editable-content">Acupuntura</h1>
+            <h1>Acupuntura</h1>
 
-            <div class="chapter-text">
-                <p class="editable-content">
-                    [Aquí puedes escribir el contenido sobre acupuntura. Este texto será editable cuando estés en modo administrador.]
-                </p>
+            <div class="content-section">
+                <p>La acupuntura es una técnica terapéutica milenaria que forma parte de la medicina tradicional china. Se basa en la estimulación de puntos específicos del cuerpo mediante la inserción de agujas muy finas.</p>
+                
+                <h2>Principios Fundamentales</h2>
+                <ul>
+                    <li>Teoría del Yin y Yang</li>
+                    <li>Sistema de meridianos energéticos</li>
+                    <li>Puntos de acupuntura específicos</li>
+                    <li>Balance energético del cuerpo</li>
+                </ul>
+
+                <h2>Aplicaciones Terapéuticas</h2>
+                <p>La acupuntura se utiliza para tratar diversas condiciones:</p>
+                <ul>
+                    <li>Dolor crónico y agudo</li>
+                    <li>Trastornos del sistema nervioso</li>
+                    <li>Problemas digestivos</li>
+                    <li>Estrés y ansiedad</li>
+                    <li>Trastornos del sueño</li>
+                </ul>
+
+                <h2>Beneficios</h2>
+                <ul>
+                    <li>Tratamiento no farmacológico</li>
+                    <li>Mínimos efectos secundarios</li>
+                    <li>Enfoque holístico de la salud</li>
+                    <li>Efectividad comprobada científicamente</li>
+                </ul>
             </div>
 
             <div class="navigation-buttons">
-                <a href="medicina-natural.html" class="nav-button">← Sección Anterior</a>
-                <a href="medicina-fitoterapia.html" class="nav-button">Siguiente Sección →</a>
+                <a href="medicina-fitoterapia.html" class="nav-button">← Sección Anterior</a>
+                <a href="capitulo5.html" class="nav-button">Volver al Índice →</a>
             </div>
         </div>
     </div>
@@ -45,7 +71,6 @@
     <script>
         const navToggle = document.getElementById("navToggle");
         const navMenu = document.getElementById("navMenu");
-
         navToggle.addEventListener("click", () => {
             navMenu.classList.toggle("active");
         });
