@@ -123,16 +123,32 @@ const startServer = async () => {
         const { content } = req.body;
         const filePath = join(__dirname, filename);
 
+        // En la ruta para guardar cambios, después de guardar en el sistema de archivos:
         // Guardar en el sistema de archivos
         await fs.writeFile(filePath, content, "utf8");
+        console.log(`Archivo guardado en el sistema de archivos: ${filePath}`);
 
-        // También guardar una copia de respaldo local
+        // Verificar que el archivo se guardó correctamente
+        try {
+          const savedContent = await fs.readFile(filePath, "utf8");
+          if (savedContent !== content) {
+            console.error(
+              "¡Advertencia! El contenido guardado no coincide con el original"
+            );
+            // Intentar guardar nuevamente
+            await fs.writeFile(filePath, content, "utf8");
+            console.log("Reintento de guardado completado");
+          }
+        } catch (verifyError) {
+          console.error("Error al verificar el archivo guardado:", verifyError);
+        }
+
+        // Crear directorio de respaldos
         const backupDir = join(__dirname, "backups");
         try {
-          // Crear directorio de respaldos si no existe
           await fs.mkdir(backupDir, { recursive: true });
 
-          // Guardar copia de respaldo con timestamp
+          // Guardar una copia de respaldo con timestamp
           const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
           const backupPath = join(backupDir, `${filename}.${timestamp}.bak`);
           await fs.writeFile(backupPath, content, "utf8");
@@ -143,10 +159,9 @@ const startServer = async () => {
           await fs.writeFile(latestBackupPath, content, "utf8");
         } catch (backupError) {
           console.error("Error al crear respaldo:", backupError);
-          // Continuar con el proceso aunque falle el respaldo
         }
 
-        // Intentar guardar en MongoDB si está disponible
+        // Verificar si MongoDB está conectado
         if (mongoose.connection.readyState === 1) {
           try {
             // Si el modelo no existe, crearlo
@@ -186,7 +201,7 @@ const startServer = async () => {
       }
     });
 
-    // Esta es la única definición que debe quedar para esta ruta
+    // Ruta para obtener el contenido de un archivo
     app.get("/api/files/:filename", async (req, res) => {
       try {
         const { filename } = req.params;
