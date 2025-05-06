@@ -4,6 +4,7 @@ import { dirname, join } from "path";
 import fs from "fs/promises";
 import dotenv from "dotenv";
 import { Pool } from 'pg';
+import cors from 'cors';
 
 // Configurar dotenv
 dotenv.config();
@@ -14,11 +15,14 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Habilitar CORS
+app.use(cors());
+
 // Configuración de PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false // Necesario para Render
+    rejectUnauthorized: false
   }
 });
 
@@ -61,6 +65,34 @@ const initDatabase = async () => {
   }
 };
 
+// Función para sincronizar archivos con la base de datos
+const syncFilesWithDatabase = async () => {
+  try {
+    const files = await fs.readdir(__dirname);
+    const htmlFiles = files.filter(file => file.endsWith('.html'));
+    
+    const client = await pool.connect();
+    for (const filename of htmlFiles) {
+      try {
+        const filePath = join(__dirname, filename);
+        const content = await fs.readFile(filePath, "utf8");
+        
+        // Actualizar o insertar en la base de datos
+        await client.query(
+          'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+          [filename, content]
+        );
+        console.log(`Archivo ${filename} sincronizado con la base de datos`);
+      } catch (error) {
+        console.error(`Error al sincronizar ${filename}:`, error);
+      }
+    }
+    client.release();
+  } catch (error) {
+    console.error("Error en la sincronización:", error);
+  }
+};
+
 // Ruta de health check
 app.get("/api/health", async (req, res) => {
   try {
@@ -85,31 +117,8 @@ app.get("/api/health", async (req, res) => {
 // Ruta para listar archivos
 app.get("/api/files", async (req, res) => {
   try {
-    // Primero, obtener todos los archivos HTML del sistema
     const files = await fs.readdir(__dirname);
     const htmlFiles = files.filter(file => file.endsWith('.html'));
-
-    // Obtener los archivos que ya están en la base de datos
-    const client = await pool.connect();
-    const dbResult = await client.query('SELECT filename FROM file_contents');
-    const dbFiles = dbResult.rows.map(row => row.filename);
-    client.release();
-
-    // Para cada archivo HTML que no esté en la base de datos, leerlo y guardarlo
-    for (const filename of htmlFiles) {
-      if (!dbFiles.includes(filename)) {
-        try {
-          const filePath = join(__dirname, filename);
-          const content = await fs.readFile(filePath, "utf8");
-          await saveToDatabase(filename, content);
-          console.log(`Archivo ${filename} sincronizado con la base de datos`);
-        } catch (error) {
-          console.error(`Error al sincronizar ${filename}:`, error);
-        }
-      }
-    }
-
-    // Devolver la lista completa de archivos HTML
     res.json(htmlFiles);
   } catch (error) {
     console.error("Error al listar archivos:", error);
@@ -117,55 +126,46 @@ app.get("/api/files", async (req, res) => {
   }
 });
 
-// Función para recuperar contenido desde la base de datos
-const recoverFromDatabase = async (filename) => {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(
-      'SELECT content FROM file_contents WHERE filename = $1',
-      [filename]
-    );
-    if (result.rows.length > 0) {
-      return result.rows[0].content;
-    }
-    return null;
-  } finally {
-    client.release();
-  }
-};
-
 // Ruta para obtener el contenido de un archivo
 app.get("/api/files/:filename", async (req, res) => {
   try {
     const { filename } = req.params;
     const filePath = join(__dirname, filename);
 
-    // Primero intentar leer del sistema de archivos
+    // Intentar leer de la base de datos primero
+    const client = await pool.connect();
+    const dbResult = await client.query(
+      'SELECT content FROM file_contents WHERE filename = $1',
+      [filename]
+    );
+    client.release();
+
+    if (dbResult.rows.length > 0) {
+      // Verificar si el contenido de la base de datos es más reciente
+      const dbContent = dbResult.rows[0].content;
+      try {
+        const fileContent = await fs.readFile(filePath, "utf8");
+        if (fileContent !== dbContent) {
+          // Si el contenido es diferente, actualizar el archivo
+          await fs.writeFile(filePath, dbContent, "utf8");
+          console.log(`Archivo ${filename} actualizado desde la base de datos`);
+        }
+      } catch (error) {
+        // Si no se puede leer el archivo, crearlo con el contenido de la base de datos
+        await fs.writeFile(filePath, dbContent, "utf8");
+        console.log(`Archivo ${filename} creado desde la base de datos`);
+      }
+      return res.json({ content: dbContent });
+    }
+
+    // Si no está en la base de datos, leer del sistema de archivos
     try {
       const content = await fs.readFile(filePath, "utf8");
-      // Actualizar la base de datos con el contenido actual
+      // Guardar en la base de datos
       await saveToDatabase(filename, content);
-      return res.json({ content });
-    } catch (fileError) {
-      console.log(`No se pudo leer el archivo ${filename} del sistema de archivos, intentando recuperar de la base de datos...`);
-      
-      // Si no se puede leer del sistema de archivos, intentar recuperar de la base de datos
-      const dbContent = await recoverFromDatabase(filename);
-      if (dbContent) {
-        // Intentar restaurar el archivo desde la base de datos
-        try {
-          await fs.writeFile(filePath, dbContent, "utf8");
-          console.log(`Archivo ${filename} restaurado desde la base de datos`);
-          return res.json({ content: dbContent, restored: true });
-        } catch (restoreError) {
-          console.error(`Error al restaurar archivo ${filename}:`, restoreError);
-          // Aún así devolver el contenido de la base de datos
-          return res.json({ content: dbContent, fromDatabase: true });
-        }
-      }
-      
-      // Si no se encuentra en ningún lado, devolver error
-      return res.status(404).json({ error: "Archivo no encontrado" });
+      res.json({ content });
+    } catch (error) {
+      res.status(404).json({ error: "Archivo no encontrado" });
     }
   } catch (error) {
     console.error("Error al leer archivo:", error);
@@ -193,32 +193,13 @@ app.post("/api/files/:filename", async (req, res) => {
     const { content } = req.body;
     const filePath = join(__dirname, filename);
 
-    // Guardar en el sistema de archivos
-    try {
-      await fs.writeFile(filePath, content, "utf8");
-      console.log(`Archivo guardado en el sistema de archivos: ${filePath}`);
+    // Guardar en la base de datos primero
+    await saveToDatabase(filename, content);
+    console.log(`Archivo ${filename} guardado en la base de datos`);
 
-      // Verificar que el archivo se guardó correctamente
-      const savedContent = await fs.readFile(filePath, "utf8");
-      if (savedContent !== content) {
-        console.error("¡Advertencia! El contenido guardado no coincide con el original");
-        // Intentar guardar nuevamente
-        await fs.writeFile(filePath, content, "utf8");
-        console.log("Reintento de guardado completado");
-      }
-    } catch (fileError) {
-      console.error("Error al guardar en el sistema de archivos:", fileError);
-      return res.status(500).json({ error: "Error al guardar en el sistema de archivos" });
-    }
-
-    // Guardar en la base de datos
-    try {
-      await saveToDatabase(filename, content);
-      console.log(`Archivo ${filename} guardado en la base de datos`);
-    } catch (dbError) {
-      console.error("Error al guardar en la base de datos:", dbError);
-      // No retornamos error aquí porque el archivo ya se guardó en el sistema de archivos
-    }
+    // Luego guardar en el sistema de archivos
+    await fs.writeFile(filePath, content, "utf8");
+    console.log(`Archivo ${filename} guardado en el sistema de archivos`);
 
     res.json({ 
       message: "Archivo guardado exitosamente",
@@ -245,8 +226,10 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     await initDatabase();
-    app.listen(PORT, () => {
-      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    await syncFilesWithDatabase(); // Sincronizar archivos al inicio
+    
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Servidor corriendo en el puerto ${PORT}`);
       console.log("Modo:", process.env.NODE_ENV || "development");
     });
   } catch (error) {
