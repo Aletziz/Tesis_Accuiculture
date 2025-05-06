@@ -65,8 +65,8 @@ const initDatabase = async () => {
   }
 };
 
-// Función para sincronizar archivos con la base de datos
-const syncFilesWithDatabase = async () => {
+// Función para cargar archivos iniciales en la base de datos
+const loadInitialFiles = async () => {
   try {
     const files = await fs.readdir(__dirname);
     const htmlFiles = files.filter(file => file.endsWith('.html'));
@@ -77,21 +77,108 @@ const syncFilesWithDatabase = async () => {
         const filePath = join(__dirname, filename);
         const content = await fs.readFile(filePath, "utf8");
         
-        // Actualizar o insertar en la base de datos
-        await client.query(
-          'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
-          [filename, content]
+        // Verificar si el archivo ya existe en la base de datos
+        const existingFile = await client.query(
+          'SELECT content FROM file_contents WHERE filename = $1',
+          [filename]
         );
-        console.log(`Archivo ${filename} sincronizado con la base de datos`);
+
+        if (existingFile.rows.length === 0) {
+          // Si no existe, insertarlo
+          await client.query(
+            'INSERT INTO file_contents (filename, content) VALUES ($1, $2)',
+            [filename, content]
+          );
+          console.log(`Archivo ${filename} cargado inicialmente en la base de datos`);
+        }
       } catch (error) {
-        console.error(`Error al sincronizar ${filename}:`, error);
+        console.error(`Error al cargar ${filename}:`, error);
       }
     }
     client.release();
   } catch (error) {
-    console.error("Error en la sincronización:", error);
+    console.error("Error al cargar archivos iniciales:", error);
   }
 };
+
+// Ruta para servir archivos HTML directamente desde la base de datos
+app.get("/*.html", async (req, res) => {
+  try {
+    const filename = req.path.substring(1); // Remover el slash inicial
+    const client = await pool.connect();
+    const result = await client.query(
+      'SELECT content FROM file_contents WHERE filename = $1',
+      [filename]
+    );
+    client.release();
+
+    if (result.rows.length > 0) {
+      res.setHeader('Content-Type', 'text/html');
+      res.send(result.rows[0].content);
+    } else {
+      res.status(404).send('Archivo no encontrado');
+    }
+  } catch (error) {
+    console.error("Error al servir archivo:", error);
+    res.status(500).send('Error interno del servidor');
+  }
+});
+
+// Ruta para listar archivos
+app.get("/api/files", async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT filename FROM file_contents');
+    client.release();
+    res.json(result.rows.map(row => row.filename));
+  } catch (error) {
+    console.error("Error al listar archivos:", error);
+    res.status(500).json({ error: "Error al listar archivos" });
+  }
+});
+
+// Ruta para obtener el contenido de un archivo
+app.get("/api/files/:filename", async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const client = await pool.connect();
+    const result = await client.query(
+      'SELECT content FROM file_contents WHERE filename = $1',
+      [filename]
+    );
+    client.release();
+
+    if (result.rows.length > 0) {
+      res.json({ content: result.rows[0].content });
+    } else {
+      res.status(404).json({ error: "Archivo no encontrado" });
+    }
+  } catch (error) {
+    console.error("Error al leer archivo:", error);
+    res.status(500).json({ error: "Error al leer archivo" });
+  }
+});
+
+// Ruta para guardar cambios en un archivo
+app.post("/api/files/:filename", async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const { content } = req.body;
+
+    const client = await pool.connect();
+    await client.query(
+      'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+      [filename, content]
+    );
+    client.release();
+
+    console.log(`Archivo ${filename} guardado en la base de datos`);
+    res.json({ message: "Archivo guardado exitosamente" });
+  } catch (error) {
+    console.error("Error al guardar archivo:", error);
+    res.status(500).json({ error: "Error al guardar archivo" });
+  }
+});
 
 // Ruta de health check
 app.get("/api/health", async (req, res) => {
@@ -114,106 +201,6 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
-// Ruta para listar archivos
-app.get("/api/files", async (req, res) => {
-  try {
-    const files = await fs.readdir(__dirname);
-    const htmlFiles = files.filter(file => file.endsWith('.html'));
-    res.json(htmlFiles);
-  } catch (error) {
-    console.error("Error al listar archivos:", error);
-    res.status(500).json({ error: "Error al listar archivos" });
-  }
-});
-
-// Ruta para obtener el contenido de un archivo
-app.get("/api/files/:filename", async (req, res) => {
-  try {
-    const { filename } = req.params;
-    const filePath = join(__dirname, filename);
-
-    // Intentar leer de la base de datos primero
-    const client = await pool.connect();
-    const dbResult = await client.query(
-      'SELECT content FROM file_contents WHERE filename = $1',
-      [filename]
-    );
-    client.release();
-
-    if (dbResult.rows.length > 0) {
-      // Verificar si el contenido de la base de datos es más reciente
-      const dbContent = dbResult.rows[0].content;
-      try {
-        const fileContent = await fs.readFile(filePath, "utf8");
-        if (fileContent !== dbContent) {
-          // Si el contenido es diferente, actualizar el archivo
-          await fs.writeFile(filePath, dbContent, "utf8");
-          console.log(`Archivo ${filename} actualizado desde la base de datos`);
-        }
-      } catch (error) {
-        // Si no se puede leer el archivo, crearlo con el contenido de la base de datos
-        await fs.writeFile(filePath, dbContent, "utf8");
-        console.log(`Archivo ${filename} creado desde la base de datos`);
-      }
-      return res.json({ content: dbContent });
-    }
-
-    // Si no está en la base de datos, leer del sistema de archivos
-    try {
-      const content = await fs.readFile(filePath, "utf8");
-      // Guardar en la base de datos
-      await saveToDatabase(filename, content);
-      res.json({ content });
-    } catch (error) {
-      res.status(404).json({ error: "Archivo no encontrado" });
-    }
-  } catch (error) {
-    console.error("Error al leer archivo:", error);
-    res.status(500).json({ error: "Error al leer archivo" });
-  }
-});
-
-// Función auxiliar para guardar en la base de datos
-const saveToDatabase = async (filename, content) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
-      [filename, content]
-    );
-  } finally {
-    client.release();
-  }
-};
-
-// Ruta para guardar cambios en un archivo
-app.post("/api/files/:filename", async (req, res) => {
-  try {
-    const { filename } = req.params;
-    const { content } = req.body;
-    const filePath = join(__dirname, filename);
-
-    // Guardar en la base de datos primero
-    await saveToDatabase(filename, content);
-    console.log(`Archivo ${filename} guardado en la base de datos`);
-
-    // Luego guardar en el sistema de archivos
-    await fs.writeFile(filePath, content, "utf8");
-    console.log(`Archivo ${filename} guardado en el sistema de archivos`);
-
-    res.json({ 
-      message: "Archivo guardado exitosamente",
-      savedIn: {
-        fileSystem: true,
-        database: true
-      }
-    });
-  } catch (error) {
-    console.error("Error al guardar archivo:", error);
-    res.status(500).json({ error: "Error al guardar archivo" });
-  }
-});
-
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error("Error en el servidor:", err);
@@ -226,7 +213,7 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     await initDatabase();
-    await syncFilesWithDatabase(); // Sincronizar archivos al inicio
+    await loadInitialFiles();
     
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`Servidor corriendo en el puerto ${PORT}`);
