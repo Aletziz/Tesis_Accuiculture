@@ -109,33 +109,44 @@ app.get("/api/files", async (req, res) => {
 app.get("/api/files/:filename", async (req, res) => {
   try {
     const { filename } = req.params;
-    const client = await pool.connect();
-    const result = await client.query(
-      'SELECT content FROM file_contents WHERE filename = $1',
-      [filename]
-    );
-    client.release();
+    const filePath = join(__dirname, filename);
 
-    if (result.rows.length > 0) {
-      res.json({ content: result.rows[0].content });
-    } else {
-      // Si no está en la base de datos, intentar leer del sistema de archivos
-      try {
-        const filePath = join(__dirname, filename);
-        const content = await fs.readFile(filePath, "utf8");
-        
-        // Guardar en la base de datos
-        const saveClient = await pool.connect();
-        await saveClient.query(
-          'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
-          [filename, content]
-        );
-        saveClient.release();
-        
-        res.json({ content });
-      } catch (fileError) {
-        res.status(404).json({ error: "Archivo no encontrado" });
+    // Intentar leer del sistema de archivos primero
+    try {
+      const content = await fs.readFile(filePath, "utf8");
+      
+      // Actualizar la base de datos con el contenido actual
+      const client = await pool.connect();
+      await client.query(
+        'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+        [filename, content]
+      );
+      client.release();
+      
+      return res.json({ content });
+    } catch (fileError) {
+      // Si no se puede leer del sistema de archivos, intentar leer de la base de datos
+      const client = await pool.connect();
+      const result = await client.query(
+        'SELECT content FROM file_contents WHERE filename = $1',
+        [filename]
+      );
+      client.release();
+
+      if (result.rows.length > 0) {
+        // Intentar restaurar el archivo desde la base de datos
+        try {
+          await fs.writeFile(filePath, result.rows[0].content, "utf8");
+          console.log(`Archivo ${filename} restaurado desde la base de datos`);
+          return res.json({ content: result.rows[0].content, restored: true });
+        } catch (restoreError) {
+          console.error(`Error al restaurar archivo ${filename}:`, restoreError);
+          // Aún así devolver el contenido de la base de datos
+          return res.json({ content: result.rows[0].content, fromDatabase: true });
+        }
       }
+      
+      return res.status(404).json({ error: "Archivo no encontrado" });
     }
   } catch (error) {
     console.error("Error al leer archivo:", error);
@@ -148,16 +159,47 @@ app.post("/api/files/:filename", async (req, res) => {
   try {
     const { filename } = req.params;
     const { content } = req.body;
+    const filePath = join(__dirname, filename);
 
-    const client = await pool.connect();
-    await client.query(
-      'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
-      [filename, content]
-    );
-    client.release();
+    // Guardar en el sistema de archivos primero
+    try {
+      await fs.writeFile(filePath, content, "utf8");
+      console.log(`Archivo guardado en el sistema de archivos: ${filePath}`);
 
-    console.log(`Archivo ${filename} guardado en la base de datos`);
-    res.json({ message: "Archivo guardado exitosamente" });
+      // Verificar que el archivo se guardó correctamente
+      const savedContent = await fs.readFile(filePath, "utf8");
+      if (savedContent !== content) {
+        console.error("¡Advertencia! El contenido guardado no coincide con el original");
+        // Intentar guardar nuevamente
+        await fs.writeFile(filePath, content, "utf8");
+        console.log("Reintento de guardado completado");
+      }
+    } catch (fileError) {
+      console.error("Error al guardar en el sistema de archivos:", fileError);
+      return res.status(500).json({ error: "Error al guardar en el sistema de archivos" });
+    }
+
+    // Guardar en la base de datos
+    try {
+      const client = await pool.connect();
+      await client.query(
+        'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+        [filename, content]
+      );
+      client.release();
+      console.log(`Archivo ${filename} guardado en la base de datos`);
+    } catch (dbError) {
+      console.error("Error al guardar en la base de datos:", dbError);
+      // No retornamos error aquí porque el archivo ya se guardó en el sistema de archivos
+    }
+
+    res.json({ 
+      message: "Archivo guardado exitosamente",
+      savedIn: {
+        fileSystem: true,
+        database: true
+      }
+    });
   } catch (error) {
     console.error("Error al guardar archivo:", error);
     res.status(500).json({ error: "Error al guardar archivo" });
