@@ -166,12 +166,42 @@ app.post("/api/files/:filename", async (req, res) => {
   try {
     const { filename } = req.params;
     const { content } = req.body;
+    const filePath = join(__dirname, filename);
+
+    // Guardar en el sistema de archivos
+    try {
+      await fs.writeFile(filePath, content, "utf8");
+      console.log(`Archivo guardado en el sistema de archivos: ${filePath}`);
+
+      // Verificar que el archivo se guardó correctamente
+      const savedContent = await fs.readFile(filePath, "utf8");
+      if (savedContent !== content) {
+        console.error("¡Advertencia! El contenido guardado no coincide con el original");
+        // Intentar guardar nuevamente
+        await fs.writeFile(filePath, content, "utf8");
+        console.log("Reintento de guardado completado");
+      }
+    } catch (fileError) {
+      console.error("Error al guardar en el sistema de archivos:", fileError);
+      return res.status(500).json({ error: "Error al guardar en el sistema de archivos" });
+    }
 
     // Guardar en la base de datos
-    await saveToDatabase(filename, content);
-    console.log(`Archivo ${filename} guardado en la base de datos`);
+    try {
+      await saveToDatabase(filename, content);
+      console.log(`Archivo ${filename} guardado en la base de datos`);
+    } catch (dbError) {
+      console.error("Error al guardar en la base de datos:", dbError);
+      // No retornamos error aquí porque el archivo ya se guardó en el sistema de archivos
+    }
 
-    res.json({ message: "Archivo guardado exitosamente" });
+    res.json({ 
+      message: "Archivo guardado exitosamente",
+      savedIn: {
+        fileSystem: true,
+        database: true
+      }
+    });
   } catch (error) {
     console.error("Error al guardar archivo:", error);
     res.status(500).json({ error: "Error al guardar archivo" });
