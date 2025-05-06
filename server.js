@@ -74,17 +74,31 @@ const loadInitialFiles = async () => {
     const client = await pool.connect();
     for (const filename of htmlFiles) {
       try {
-        const filePath = join(__dirname, filename);
-        const content = await fs.readFile(filePath, "utf8");
-        
-        // Siempre actualizar el contenido en la base de datos
-        await client.query(
-          'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
-          [filename, content]
+        // Primero intentar obtener el contenido de la base de datos
+        const dbResult = await client.query(
+          'SELECT content FROM file_contents WHERE filename = $1',
+          [filename]
         );
-        console.log(`Archivo ${filename} cargado/actualizado en la base de datos`);
+
+        if (dbResult.rows.length > 0) {
+          // Si existe en la base de datos, restaurar el archivo
+          const filePath = join(__dirname, filename);
+          await fs.writeFile(filePath, dbResult.rows[0].content, "utf8");
+          console.log(`Archivo ${filename} restaurado desde la base de datos`);
+        } else {
+          // Si no existe en la base de datos, cargar desde el sistema de archivos
+          const filePath = join(__dirname, filename);
+          const content = await fs.readFile(filePath, "utf8");
+          
+          // Guardar en la base de datos
+          await client.query(
+            'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+            [filename, content]
+          );
+          console.log(`Archivo ${filename} cargado desde el sistema de archivos`);
+        }
       } catch (error) {
-        console.error(`Error al cargar ${filename}:`, error);
+        console.error(`Error al procesar ${filename}:`, error);
       }
     }
     client.release();
