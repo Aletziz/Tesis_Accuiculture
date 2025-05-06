@@ -117,30 +117,55 @@ app.get("/api/files", async (req, res) => {
   }
 });
 
-// Ruta para obtener el contenido de un archivo
-app.get("/api/files/:filename", async (req, res) => {
+// Función para recuperar contenido desde la base de datos
+const recoverFromDatabase = async (filename) => {
+  const client = await pool.connect();
   try {
-    const { filename } = req.params;
-    const client = await pool.connect();
     const result = await client.query(
       'SELECT content FROM file_contents WHERE filename = $1',
       [filename]
     );
-    client.release();
-
     if (result.rows.length > 0) {
-      res.json({ content: result.rows[0].content });
-    } else {
-      // Si no existe en la base de datos, intentar leer del sistema de archivos
-      try {
-        const filePath = join(__dirname, filename);
-        const content = await fs.readFile(filePath, "utf8");
-        // Guardar en la base de datos para futuras referencias
-        await saveToDatabase(filename, content);
-        res.json({ content });
-      } catch (fileError) {
-        res.status(404).json({ error: "Archivo no encontrado" });
+      return result.rows[0].content;
+    }
+    return null;
+  } finally {
+    client.release();
+  }
+};
+
+// Ruta para obtener el contenido de un archivo
+app.get("/api/files/:filename", async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const filePath = join(__dirname, filename);
+
+    // Primero intentar leer del sistema de archivos
+    try {
+      const content = await fs.readFile(filePath, "utf8");
+      // Actualizar la base de datos con el contenido actual
+      await saveToDatabase(filename, content);
+      return res.json({ content });
+    } catch (fileError) {
+      console.log(`No se pudo leer el archivo ${filename} del sistema de archivos, intentando recuperar de la base de datos...`);
+      
+      // Si no se puede leer del sistema de archivos, intentar recuperar de la base de datos
+      const dbContent = await recoverFromDatabase(filename);
+      if (dbContent) {
+        // Intentar restaurar el archivo desde la base de datos
+        try {
+          await fs.writeFile(filePath, dbContent, "utf8");
+          console.log(`Archivo ${filename} restaurado desde la base de datos`);
+          return res.json({ content: dbContent, restored: true });
+        } catch (restoreError) {
+          console.error(`Error al restaurar archivo ${filename}:`, restoreError);
+          // Aún así devolver el contenido de la base de datos
+          return res.json({ content: dbContent, fromDatabase: true });
+        }
       }
+      
+      // Si no se encuentra en ningún lado, devolver error
+      return res.status(404).json({ error: "Archivo no encontrado" });
     }
   } catch (error) {
     console.error("Error al leer archivo:", error);
