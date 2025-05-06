@@ -85,10 +85,32 @@ app.get("/api/health", async (req, res) => {
 // Ruta para listar archivos
 app.get("/api/files", async (req, res) => {
   try {
+    // Primero, obtener todos los archivos HTML del sistema
+    const files = await fs.readdir(__dirname);
+    const htmlFiles = files.filter(file => file.endsWith('.html'));
+
+    // Obtener los archivos que ya están en la base de datos
     const client = await pool.connect();
-    const result = await client.query('SELECT filename FROM file_contents');
+    const dbResult = await client.query('SELECT filename FROM file_contents');
+    const dbFiles = dbResult.rows.map(row => row.filename);
     client.release();
-    res.json(result.rows.map(row => row.filename));
+
+    // Para cada archivo HTML que no esté en la base de datos, leerlo y guardarlo
+    for (const filename of htmlFiles) {
+      if (!dbFiles.includes(filename)) {
+        try {
+          const filePath = join(__dirname, filename);
+          const content = await fs.readFile(filePath, "utf8");
+          await saveToDatabase(filename, content);
+          console.log(`Archivo ${filename} sincronizado con la base de datos`);
+        } catch (error) {
+          console.error(`Error al sincronizar ${filename}:`, error);
+        }
+      }
+    }
+
+    // Devolver la lista completa de archivos HTML
+    res.json(htmlFiles);
   } catch (error) {
     console.error("Error al listar archivos:", error);
     res.status(500).json({ error: "Error al listar archivos" });
