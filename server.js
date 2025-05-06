@@ -77,20 +77,12 @@ const loadInitialFiles = async () => {
         const filePath = join(__dirname, filename);
         const content = await fs.readFile(filePath, "utf8");
         
-        // Verificar si el archivo ya existe en la base de datos
-        const existingFile = await client.query(
-          'SELECT content FROM file_contents WHERE filename = $1',
-          [filename]
+        // Siempre actualizar el contenido en la base de datos
+        await client.query(
+          'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+          [filename, content]
         );
-
-        if (existingFile.rows.length === 0) {
-          // Si no existe, insertarlo
-          await client.query(
-            'INSERT INTO file_contents (filename, content) VALUES ($1, $2)',
-            [filename, content]
-          );
-          console.log(`Archivo ${filename} cargado inicialmente en la base de datos`);
-        }
+        console.log(`Archivo ${filename} cargado/actualizado en la base de datos`);
       } catch (error) {
         console.error(`Error al cargar ${filename}:`, error);
       }
@@ -101,36 +93,12 @@ const loadInitialFiles = async () => {
   }
 };
 
-// Ruta para servir archivos HTML directamente desde la base de datos
-app.get("/*.html", async (req, res) => {
-  try {
-    const filename = req.path.substring(1); // Remover el slash inicial
-    const client = await pool.connect();
-    const result = await client.query(
-      'SELECT content FROM file_contents WHERE filename = $1',
-      [filename]
-    );
-    client.release();
-
-    if (result.rows.length > 0) {
-      res.setHeader('Content-Type', 'text/html');
-      res.send(result.rows[0].content);
-    } else {
-      res.status(404).send('Archivo no encontrado');
-    }
-  } catch (error) {
-    console.error("Error al servir archivo:", error);
-    res.status(500).send('Error interno del servidor');
-  }
-});
-
 // Ruta para listar archivos
 app.get("/api/files", async (req, res) => {
   try {
-    const client = await pool.connect();
-    const result = await client.query('SELECT filename FROM file_contents');
-    client.release();
-    res.json(result.rows.map(row => row.filename));
+    const files = await fs.readdir(__dirname);
+    const htmlFiles = files.filter(file => file.endsWith('.html'));
+    res.json(htmlFiles);
   } catch (error) {
     console.error("Error al listar archivos:", error);
     res.status(500).json({ error: "Error al listar archivos" });
@@ -151,7 +119,23 @@ app.get("/api/files/:filename", async (req, res) => {
     if (result.rows.length > 0) {
       res.json({ content: result.rows[0].content });
     } else {
-      res.status(404).json({ error: "Archivo no encontrado" });
+      // Si no está en la base de datos, intentar leer del sistema de archivos
+      try {
+        const filePath = join(__dirname, filename);
+        const content = await fs.readFile(filePath, "utf8");
+        
+        // Guardar en la base de datos
+        const saveClient = await pool.connect();
+        await saveClient.query(
+          'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+          [filename, content]
+        );
+        saveClient.release();
+        
+        res.json({ content });
+      } catch (fileError) {
+        res.status(404).json({ error: "Archivo no encontrado" });
+      }
     }
   } catch (error) {
     console.error("Error al leer archivo:", error);
@@ -177,6 +161,46 @@ app.post("/api/files/:filename", async (req, res) => {
   } catch (error) {
     console.error("Error al guardar archivo:", error);
     res.status(500).json({ error: "Error al guardar archivo" });
+  }
+});
+
+// Ruta para servir archivos HTML directamente desde la base de datos
+app.get("/*.html", async (req, res) => {
+  try {
+    const filename = req.path.substring(1); // Remover el slash inicial
+    const client = await pool.connect();
+    const result = await client.query(
+      'SELECT content FROM file_contents WHERE filename = $1',
+      [filename]
+    );
+    client.release();
+
+    if (result.rows.length > 0) {
+      res.setHeader('Content-Type', 'text/html');
+      res.send(result.rows[0].content);
+    } else {
+      // Si no está en la base de datos, intentar leer del sistema de archivos
+      try {
+        const filePath = join(__dirname, filename);
+        const content = await fs.readFile(filePath, "utf8");
+        
+        // Guardar en la base de datos
+        const saveClient = await pool.connect();
+        await saveClient.query(
+          'INSERT INTO file_contents (filename, content) VALUES ($1, $2) ON CONFLICT (filename) DO UPDATE SET content = $2, last_updated = CURRENT_TIMESTAMP',
+          [filename, content]
+        );
+        saveClient.release();
+        
+        res.setHeader('Content-Type', 'text/html');
+        res.send(content);
+      } catch (fileError) {
+        res.status(404).send('Archivo no encontrado');
+      }
+    }
+  } catch (error) {
+    console.error("Error al servir archivo:", error);
+    res.status(500).send('Error interno del servidor');
   }
 });
 
