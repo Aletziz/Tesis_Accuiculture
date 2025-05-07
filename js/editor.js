@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   const isAdmin = localStorage.getItem("adminToken") === "true";
-
-  if (isAdmin) {
+  
+  // Verificar si estamos en el Capítulo 6
+  const isChapter6 = window.location.pathname.includes('capitulo6.html');
+  
+  if (isAdmin && !isChapter6) {  // Solo agregar funcionalidad de edición si no es Capítulo 6
     // Agregar botón de cerrar sesión
     const navMenu = document.querySelector(".nav-menu");
     const logoutButton = document.createElement("li");
