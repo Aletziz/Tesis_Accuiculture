@@ -411,9 +411,10 @@ body::before {
     user-select: none !important;
 }
 
-.capitulo6 [contenteditable="true"],
-.capitulo6 [contenteditable="false"],
-.capitulo6 .editable-content {
+/* Estilos para modo no-admin */
+.capitulo6:not(.admin-mode) [contenteditable="true"],
+.capitulo6:not(.admin-mode) [contenteditable="false"],
+.capitulo6:not(.admin-mode) .editable-content {
     pointer-events: none !important;
     user-select: none !important;
     cursor: default !important;
@@ -427,4 +428,49 @@ body::before {
 .capitulo6 .nav-button {
     pointer-events: auto !important;
     cursor: pointer !important;
+}
+
+/* Forzar modo no-editable solo cuando no es admin */
+.no-edit-mode * {
+    pointer-events: none !important;
+    user-select: none !important;
+    cursor: default !important;
+}
+
+.no-edit-mode a,
+.no-edit-mode button,
+.no-edit-mode .nav-button,
+.no-edit-mode .section-button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Estilos para modo admin */
+.admin-mode .section {
+    cursor: text !important;
+    pointer-events: auto !important;
+}
+
+.admin-mode .section h3,
+.admin-mode .section p {
+    cursor: text !important;
+    pointer-events: auto !important;
+    user-select: text !important;
+}
+
+.admin-mode .editable-content {
+    cursor: text !important;
+    pointer-events: auto !important;
+    user-select: text !important;
+    border: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.admin-mode .editable-content:hover {
+    border-color: var(--secondary-color);
+}
+
+.admin-mode .editable-content:focus {
+    border-color: var(--secondary-color);
+    outline: none;
 } 

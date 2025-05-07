@@ -6,6 +6,34 @@
     <title>Capítulo 6 - Tesis Acuicultura</title>
     <link rel="stylesheet" href="css/thesis-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        // Verificar modo admin y aplicar estilos correspondientes
+        window.addEventListener('DOMContentLoaded', function() {
+            const isAdmin = localStorage.getItem('adminToken') === 'true';
+            
+            if (!isAdmin) {
+                // Si no es admin, forzar modo no-editable
+                document.body.classList.add('no-edit-mode');
+                
+                // Remover cualquier atributo contenteditable
+                document.querySelectorAll('[contenteditable]').forEach(element => {
+                    element.removeAttribute('contenteditable');
+                });
+                
+                // Remover cualquier clase editable-content
+                document.querySelectorAll('.editable-content').forEach(element => {
+                    element.classList.remove('editable-content');
+                });
+            } else {
+                // Si es admin, permitir edición
+                document.body.classList.add('admin-mode');
+                document.querySelectorAll('.section').forEach(element => {
+                    element.setAttribute('contenteditable', 'true');
+                    element.classList.add('editable-content');
+                });
+            }
+        });
+    </script>
 </head>
 <body class="capitulo6">
     <nav class="navbar">
