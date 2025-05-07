@@ -77,6 +77,20 @@
     </div>
 
     <script>
+        // Desactivar el modo de edición para este capítulo
+        document.addEventListener("DOMContentLoaded", function() {
+            // Remover cualquier atributo contenteditable
+            document.querySelectorAll('[contenteditable]').forEach(element => {
+                element.removeAttribute('contenteditable');
+            });
+            
+            // Remover cualquier clase editable-content
+            document.querySelectorAll('.editable-content').forEach(element => {
+                element.classList.remove('editable-content');
+            });
+        });
+
+        // Navegación móvil
         const navToggle = document.getElementById("navToggle");
         const navMenu = document.getElementById("navMenu");
         navToggle.addEventListener("click", () => {
