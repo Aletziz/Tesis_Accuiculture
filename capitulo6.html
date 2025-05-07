@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Capítulo 6 - Tesis Acuicultura</title>
-    <link rel="stylesheet" href="css/thesis-style.css">
+    <link rel="stylesheet" href="css/thesis-style.css?v=1.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        // Forzar recarga de estilos
+        window.addEventListener('load', function() {
+            const links = document.getElementsByTagName('link');
+            for (let i = 0; i < links.length; i++) {
+                if (links[i].rel === 'stylesheet') {
+                    const href = links[i].href.split('?')[0];
+                    links[i].href = href + '?v=' + new Date().getTime();
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <nav class="navbar">
