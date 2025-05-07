@@ -389,4 +389,42 @@ body::before {
 
 .chapter-text ul li {
     margin-bottom: 8px;
+}
+
+/* Estilos específicos para el Capítulo 6 */
+.capitulo6 .section-button {
+    text-decoration: none !important;
+    color: inherit !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.capitulo6 .section {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    user-select: none !important;
+}
+
+.capitulo6 .section h3,
+.capitulo6 .section p {
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+.capitulo6 [contenteditable="true"],
+.capitulo6 [contenteditable="false"],
+.capitulo6 .editable-content {
+    pointer-events: none !important;
+    user-select: none !important;
+    cursor: default !important;
+}
+
+.capitulo6 a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.capitulo6 .nav-button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
 } 

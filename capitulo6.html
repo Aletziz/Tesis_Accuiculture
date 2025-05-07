@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/thesis-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body class="capitulo6">
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
@@ -77,7 +77,7 @@
     </div>
 
     <script>
-        // Desactivar el modo de edición para este capítulo
+        // Desactivar completamente el modo de edición
         document.addEventListener("DOMContentLoaded", function() {
             // Remover cualquier atributo contenteditable
             document.querySelectorAll('[contenteditable]').forEach(element => {
@@ -88,6 +88,10 @@
             document.querySelectorAll('.editable-content').forEach(element => {
                 element.classList.remove('editable-content');
             });
+
+            // Desactivar el modo admin para esta página
+            localStorage.removeItem("adminToken");
+            localStorage.removeItem("isAdmin");
         });
 
         // Navegación móvil
