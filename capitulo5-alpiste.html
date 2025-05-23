@@ -1,76 +1,124 @@
-<html lang="es"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpiste - Capítulo 5 - Tesis Acuicultura</title>
-    <link rel="stylesheet" href="css/thesis-style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alpiste - Capítulo 5</title>
+    <link rel="stylesheet" href="css/thesis-style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Particle container -->
+    <div id="particles"></div>
+
     <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
-            <button class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="capitulo1.html">Capítulo 1</a></li>
-                <li><a href="capitulo2.html">Capítulo 2</a></li>
-                <li><a href="capitulo3.html">Capítulo 3</a></li>
-                <li><a href="capitulo4.html">Capítulo 4</a></li>
-                <li><a href="capitulo5.html">Capítulo 5</a></li>
-            </ul>
-        </div>
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Ecosistemas terrestres en Cuba</a>
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="capitulo1.html">Capítulo 1</a></li>
+          <li><a href="capitulo2.html">Capítulo 2</a></li>
+          <li><a href="capitulo3.html">Capítulo 3</a></li>
+          <li><a href="capitulo4.html">Capítulo 4</a></li>
+          <li><a href="capitulo5.html" class="active">Capítulo 5</a></li>
+          <li><a href="capitulo6.html">Capítulo 6</a></li>
+        </ul>
+      </div>
     </nav>
 
-    <div class="container" contenteditable="true">
-        <div class="content-box" contenteditable="true">
-            <a href="medicina-natural.html" class="back-link" contenteditable="true">← Volver a Medicina Natural</a>
+    <div class="container">
+      <div class="content-box">
+        <a href="capitulo5.html" class="back-link">← Volver al Capítulo 5</a>
 
-            <h1 contenteditable="true">Alpiste</h1>
+        <h1 class="editable-content">Alpiste</h1>
 
-            <div class="content-section" contenteditable="true">
-                <h2 contenteditable="true">Descripción</h2>
-                <p contenteditable="true">El alpiste (Phalaris canariensis) es una semilla tradicionalmente usada como alimento para aves, pero que también posee importantes propiedades medicinales para los seres humanos.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-
-                <h2 contenteditable="true">Propiedades Medicinales</h2>
-                <ul contenteditable="true">
-                    <li contenteditable="true">Diurética</li>
-                    <li contenteditable="true">Hipolipemiante</li>
-                    <li contenteditable="true">Antioxidante</li>
-                    <li contenteditable="true">Reguladora del metabolismo</li>
-                </ul>
-
-                <h2 contenteditable="true">Usos Terapéuticos</h2>
-                <ul contenteditable="true">
-                    <li contenteditable="true">Control de la diabetes</li>
-                    <li contenteditable="true">Reducción del colesterol</li>
-                    <li contenteditable="true">Desintoxicación del organismo</li>
-                    <li contenteditable="true">Ayuda en la pérdida de peso</li>
-                </ul>
-
-                <h2 contenteditable="true">Formas de Preparación</h2>
-                <ul contenteditable="true">
-                    <li contenteditable="true">Leche de alpiste</li>
-                    <li contenteditable="true">Infusión</li>
-                    <li contenteditable="true">Harina</li>
-                    <li contenteditable="true">Extracto</li>
-                </ul>
-            </div>
-
-            <div class="navigation-buttons" contenteditable="true">
-                <a href="capitulo5-alcachofa.html" class="nav-button" contenteditable="true">← Sección Anterior</a>
-                <a href="capitulo5-anis.html" class="nav-button" contenteditable="true">Siguiente Sección →</a>
-            </div>
+        <div class="content-section">
+          <div class="editable-content">
+            [Aquí puedes escribir el contenido sobre el alpiste. Este texto será
+            editable cuando estés en modo administrador.]
+          </div>
         </div>
+
+        <div class="navigation-buttons">
+          <a href="capitulo5.html" class="nav-button">← Capítulo 5</a>
+          <a href="capitulo5-anis.html" class="nav-button"
+            >Siguiente Sección →</a
+          >
+        </div>
+      </div>
     </div>
 
     <script>
-        const navToggle = document.getElementById("navToggle");
-        const navMenu = document.getElementById("navMenu");
-        navToggle.addEventListener("click", () => {
-            navMenu.classList.toggle("active");
-        });
-    </script>
+      // Navigation toggle
+      const navToggle = document.getElementById("navToggle");
+      const navMenu = document.getElementById("navMenu");
+      navToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+      });
 
- </body></html>
+      // Particle system
+      document.addEventListener("DOMContentLoaded", function () {
+        createParticles();
+      });
+
+      function createParticles() {
+        const particlesContainer = document.getElementById("particles");
+        const numberOfParticles = 50;
+
+        for (let i = 0; i < numberOfParticles; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+
+          // Random properties
+          const size = Math.random() * 5 + 2;
+          const posX = Math.random() * 100;
+          const posY = Math.random() * 100;
+          const animationDuration = Math.random() * 20 + 10;
+          const animationDelay = Math.random() * 5;
+
+          particle.style.width = size + "px";
+          particle.style.height = size + "px";
+          particle.style.left = posX + "%";
+          particle.style.top = posY + "%";
+          particle.style.animationDuration = animationDuration + "s";
+          particle.style.animationDelay = animationDelay + "s";
+
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // Verificar si es administrador y habilitar edición
+      document.addEventListener("DOMContentLoaded", function () {
+        const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+        if (isAdmin) {
+          // Habilitar edición solo para elementos con clase editable-content
+          document.querySelectorAll(".editable-content").forEach((element) => {
+            const editBtn = document.createElement("button");
+            editBtn.className = "edit-button";
+            editBtn.innerHTML = "Editar";
+            editBtn.onclick = () => makeEditable(element);
+            element.parentNode.insertBefore(editBtn, element);
+          });
+        }
+      });
+
+      function makeEditable(element) {
+        if (element.contentEditable === "true") {
+          element.contentEditable = "false";
+          element.style.border = "none";
+          element.previousElementSibling.innerHTML = "Editar";
+        } else {
+          element.contentEditable = "true";
+          element.style.border = "2px dashed #007bff";
+          element.previousElementSibling.innerHTML = "Guardar";
+        }
+      }
+    </script>
+  </body>
+</html>
