@@ -179,16 +179,56 @@
         const gallery = document.getElementById("gallery");
         gallery.innerHTML = ""; // Limpiar galería
 
+        // Usar imágenes estáticas en lugar de generarlas dinámicamente
+        const imageNames = [
+          "IMG-20250506-WA0819.jpg",
+          "IMG-20250506-WA0820.jpg",
+          "IMG-20250506-WA0821.jpg",
+          "IMG-20250506-WA0822.jpg",
+          "IMG-20250506-WA0823.jpg",
+          "IMG-20250506-WA0824.jpg",
+          "IMG-20250506-WA0825.jpg",
+          "IMG-20250506-WA0826.jpg",
+          "IMG-20250506-WA0827.jpg",
+          "IMG-20250506-WA0828.jpg",
+          "IMG-20250506-WA0829.jpg",
+          "IMG-20250506-WA0830.jpg",
+          "IMG-20250506-WA0831.jpg",
+          "IMG-20250506-WA0832.jpg",
+          "IMG-20250506-WA0833.jpg",
+          "IMG-20250506-WA0834.jpg",
+          "IMG-20250506-WA0835.jpg",
+          "IMG-20250506-WA0836.jpg",
+          "IMG-20250506-WA0837.jpg",
+          "IMG-20250506-WA0838.jpg",
+          "IMG-20250506-WA0839.jpg",
+          "IMG-20250506-WA0840.jpg",
+          "IMG-20250506-WA0841.jpg",
+          "IMG-20250506-WA0842.jpg",
+          "IMG-20250506-WA0843.jpg",
+          "IMG-20250506-WA0844.jpg",
+          "IMG-20250506-WA0845.jpg",
+          "IMG-20250506-WA0846.jpg",
+          "IMG-20250506-WA0847.jpg",
+          "IMG-20250506-WA0848.jpg",
+          "IMG-20250506-WA0849.jpg",
+          "IMG-20250506-WA0850.jpg",
+          "IMG-20250506-WA0851.jpg",
+          "IMG-20250506-WA0852.jpg",
+          "IMG-20250506-WA0853.jpg",
+          "IMG-20250506-WA0854.jpg",
+          "IMG-20250506-WA0855.jpg",
+          "IMG-20250506-WA0856.jpg",
+        ];
+
         // Crear array con las rutas de las imágenes
         images = [];
-        for (let i = 819; i <= 856; i++) {
-          // Corregimos el formato del número para que coincida exactamente con tus archivos
-          let imgNum = i;
+        imageNames.forEach((name, i) => {
           images.push({
-            src: `imgs/IMG-20250506-WA${imgNum}.jpg`,
-            alt: `Ecosistema terrestre ${i - 818}`,
+            src: `imgs/${name}`,
+            alt: `Ecosistema terrestre ${i + 1}`,
           });
-        }
+        });
 
         // Crear elementos para cada imagen
         images.forEach((image, index) => {
@@ -224,16 +264,16 @@
           item.appendChild(img);
           gallery.appendChild(item);
         });
+      }
 
-        // Agregar mensaje si no se cargaron imágenes
-        if (gallery.children.length === 0) {
-          const message = document.createElement("p");
-          message.textContent =
-            "No se pudieron cargar las imágenes. Por favor, verifica la conexión o inténtalo más tarde.";
-          message.style.textAlign = "center";
-          message.style.padding = "20px";
-          gallery.appendChild(message);
-        }
+      // Agregar mensaje si no se cargaron imágenes
+      if (gallery.children.length === 0) {
+        const message = document.createElement("p");
+        message.textContent =
+          "No se pudieron cargar las imágenes. Por favor, verifica la conexión o inténtalo más tarde.";
+        message.style.textAlign = "center";
+        message.style.padding = "20px";
+        gallery.appendChild(message);
       }
 
       // Funciones del lightbox
@@ -283,16 +323,68 @@
       // Añade esta función al final del script
       function checkImagesExist() {
         console.log("Verificando imágenes...");
-        for (let i = 819; i <= 856; i++) {
+        let foundCount = 0;
+        let missingCount = 0;
+
+        const imageNames = [
+          "IMG-20250506-WA0819.jpg",
+          "IMG-20250506-WA0820.jpg",
+          "IMG-20250506-WA0821.jpg",
+          "IMG-20250506-WA0822.jpg",
+          "IMG-20250506-WA0823.jpg",
+          "IMG-20250506-WA0824.jpg",
+          "IMG-20250506-WA0825.jpg",
+          "IMG-20250506-WA0826.jpg",
+          "IMG-20250506-WA0827.jpg",
+          "IMG-20250506-WA0828.jpg",
+          "IMG-20250506-WA0829.jpg",
+          "IMG-20250506-WA0830.jpg",
+          "IMG-20250506-WA0831.jpg",
+          "IMG-20250506-WA0832.jpg",
+          "IMG-20250506-WA0833.jpg",
+          "IMG-20250506-WA0834.jpg",
+          "IMG-20250506-WA0835.jpg",
+          "IMG-20250506-WA0836.jpg",
+          "IMG-20250506-WA0837.jpg",
+          "IMG-20250506-WA0838.jpg",
+          "IMG-20250506-WA0839.jpg",
+          "IMG-20250506-WA0840.jpg",
+          "IMG-20250506-WA0841.jpg",
+          "IMG-20250506-WA0842.jpg",
+          "IMG-20250506-WA0843.jpg",
+          "IMG-20250506-WA0844.jpg",
+          "IMG-20250506-WA0845.jpg",
+          "IMG-20250506-WA0846.jpg",
+          "IMG-20250506-WA0847.jpg",
+          "IMG-20250506-WA0848.jpg",
+          "IMG-20250506-WA0849.jpg",
+          "IMG-20250506-WA0850.jpg",
+          "IMG-20250506-WA0851.jpg",
+          "IMG-20250506-WA0852.jpg",
+          "IMG-20250506-WA0853.jpg",
+          "IMG-20250506-WA0854.jpg",
+          "IMG-20250506-WA0855.jpg",
+          "IMG-20250506-WA0856.jpg",
+        ];
+
+        imageNames.forEach((name) => {
           const img = new Image();
-          img.src = `imgs/IMG-20250506-WA${i}.jpg`;
+          img.src = `imgs/${name}`;
           img.onload = function () {
-            console.log(`✅ Imagen encontrada: IMG-20250506-WA${i}.jpg`);
+            console.log(`✅ Imagen encontrada: ${name}`);
+            foundCount++;
+            console.log(
+              `Encontradas: ${foundCount}, Faltantes: ${missingCount}`
+            );
           };
           img.onerror = function () {
-            console.log(`❌ Imagen NO encontrada: IMG-20250506-WA${i}.jpg`);
+            console.log(`❌ Imagen NO encontrada: ${name}`);
+            missingCount++;
+            console.log(
+              `Encontradas: ${foundCount}, Faltantes: ${missingCount}`
+            );
           };
-        }
+        });
       }
 
       // Ejecutar verificación después de cargar la página
