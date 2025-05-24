@@ -553,24 +553,49 @@
     </script>
   </body>
 </html>
-<!-- Asumiendo que tienes una sección de galería como esta -->
-<div class="gallery-container">
-  <!-- Aquí irán las 38 imágenes en un bucle -->
-  <div class="gallery-item">
-    <img src="imgs/IMG-20250506-WA0819.jpg" alt="Imagen 1" />
-  </div>
-  <div class="gallery-item">
-    <img src="imgs/IMG-20250506-WA0820.jpg" alt="Imagen 2" />
-  </div>
-  <!-- ... y así sucesivamente hasta la imagen 38 (WA0856) -->
-  <div class="gallery-item">
-    <img src="imgs/IMG-20250506-WA0856.jpg" alt="Imagen 38" />
-  </div>
-</div>
-<!-- Add this meta tag to your HTML files to prevent caching -->
-<meta
-  http-equiv="Cache-Control"
-  content="no-cache, no-store, must-revalidate"
-/>
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Añade esto justo antes del cierre del body -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryContainer = document.querySelector('.gallery-container');
+            if (!galleryContainer) {
+                console.error('No se encontró el contenedor de la galería');
+                return;
+            }
+            
+            // Limpiar el contenedor existente
+            galleryContainer.innerHTML = '';
+            
+            // Añadir las 38 imágenes dinámicamente
+            for (let i = 819; i <= 856; i++) {
+                const imgNumber = i.toString().padStart(4, '0');
+                const imgSrc = `imgs/IMG-20250506-WA${imgNumber}.jpg`;
+                
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.alt = `Imagen ${i - 818}`;
+                img.onerror = function() {
+                    console.warn(`No se pudo cargar la imagen: ${imgSrc}`);
+                    this.parentNode.style.display = 'none';
+                };
+                
+                galleryItem.appendChild(img);
+                galleryContainer.appendChild(galleryItem);
+            }
+        });
+    </script>
+    </body>
+    </html>
+    <!-- Resto del head sin cambios -->
+  </head>
+  <body>
+    <!-- Resto del código sin cambios -->
+  </body>
+</html>
