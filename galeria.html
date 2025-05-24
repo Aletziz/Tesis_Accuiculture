@@ -135,25 +135,80 @@
       <div class="content-box">
         <h1>Galería de Imágenes - Ecosistemas terrestres en Cuba</h1>
 
-        <div id="gallery" class="gallery">
-          <!-- Las imágenes se cargarán aquí mediante JavaScript -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Lightbox para ver imágenes ampliadas -->
-    <div id="lightbox" class="lightbox">
-      <div class="lightbox-content">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <img id="lightbox-image" class="lightbox-image" src="" alt="" />
-        <div id="lightbox-caption" class="lightbox-caption"></div>
-        <div class="lightbox-nav">
-          <button onclick="changeImage(-1)">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <button onclick="changeImage(1)">
-            <i class="fas fa-chevron-right"></i>
-          </button>
+        <div class="gallery">
+          <!-- Imágenes estáticas -->
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0819.jpg"
+              alt="Ecosistema terrestre 1"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0820.jpg"
+              alt="Ecosistema terrestre 2"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0821.jpg"
+              alt="Ecosistema terrestre 3"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0822.jpg"
+              alt="Ecosistema terrestre 4"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0823.jpg"
+              alt="Ecosistema terrestre 5"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0824.jpg"
+              alt="Ecosistema terrestre 6"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0825.jpg"
+              alt="Ecosistema terrestre 7"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0826.jpg"
+              alt="Ecosistema terrestre 8"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0827.jpg"
+              alt="Ecosistema terrestre 9"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0828.jpg"
+              alt="Ecosistema terrestre 10"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0829.jpg"
+              alt="Ecosistema terrestre 11"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="imgs/IMG-20250506-WA0830.jpg"
+              alt="Ecosistema terrestre 12"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -165,230 +220,6 @@
       navToggle.addEventListener("click", () => {
         navMenu.classList.toggle("active");
       });
-
-      // Variables para el lightbox
-      let currentImageIndex = 0;
-      let images = [];
-
-      // Cargar imágenes
-      document.addEventListener("DOMContentLoaded", function () {
-        loadGalleryImages();
-      });
-
-      function loadGalleryImages() {
-        const gallery = document.getElementById("gallery");
-        gallery.innerHTML = ""; // Limpiar galería
-
-        // Usar imágenes estáticas en lugar de generarlas dinámicamente
-        const imageNames = [
-          "IMG-20250506-WA0819.jpg",
-          "IMG-20250506-WA0820.jpg",
-          "IMG-20250506-WA0821.jpg",
-          "IMG-20250506-WA0822.jpg",
-          "IMG-20250506-WA0823.jpg",
-          "IMG-20250506-WA0824.jpg",
-          "IMG-20250506-WA0825.jpg",
-          "IMG-20250506-WA0826.jpg",
-          "IMG-20250506-WA0827.jpg",
-          "IMG-20250506-WA0828.jpg",
-          "IMG-20250506-WA0829.jpg",
-          "IMG-20250506-WA0830.jpg",
-          "IMG-20250506-WA0831.jpg",
-          "IMG-20250506-WA0832.jpg",
-          "IMG-20250506-WA0833.jpg",
-          "IMG-20250506-WA0834.jpg",
-          "IMG-20250506-WA0835.jpg",
-          "IMG-20250506-WA0836.jpg",
-          "IMG-20250506-WA0837.jpg",
-          "IMG-20250506-WA0838.jpg",
-          "IMG-20250506-WA0839.jpg",
-          "IMG-20250506-WA0840.jpg",
-          "IMG-20250506-WA0841.jpg",
-          "IMG-20250506-WA0842.jpg",
-          "IMG-20250506-WA0843.jpg",
-          "IMG-20250506-WA0844.jpg",
-          "IMG-20250506-WA0845.jpg",
-          "IMG-20250506-WA0846.jpg",
-          "IMG-20250506-WA0847.jpg",
-          "IMG-20250506-WA0848.jpg",
-          "IMG-20250506-WA0849.jpg",
-          "IMG-20250506-WA0850.jpg",
-          "IMG-20250506-WA0851.jpg",
-          "IMG-20250506-WA0852.jpg",
-          "IMG-20250506-WA0853.jpg",
-          "IMG-20250506-WA0854.jpg",
-          "IMG-20250506-WA0855.jpg",
-          "IMG-20250506-WA0856.jpg",
-        ];
-
-        // Crear array con las rutas de las imágenes
-        images = [];
-        imageNames.forEach((name, i) => {
-          images.push({
-            src: `imgs/${name}`,
-            alt: `Ecosistema terrestre ${i + 1}`,
-          });
-        });
-
-        // Crear elementos para cada imagen
-        images.forEach((image, index) => {
-          const item = document.createElement("div");
-          item.className = "gallery-item";
-
-          const img = document.createElement("img");
-          img.src = image.src;
-          img.alt = image.alt;
-
-          // Manejar errores de carga
-          img.onerror = function () {
-            this.onerror = null;
-            console.log(`No se pudo cargar: ${image.src}`);
-            // En lugar de usar una imagen de reemplazo, creamos un div con texto
-            this.style.display = "none";
-            const errorDiv = document.createElement("div");
-            errorDiv.style.width = "100%";
-            errorDiv.style.height = "200px";
-            errorDiv.style.backgroundColor = "#f0f0f0";
-            errorDiv.style.display = "flex";
-            errorDiv.style.alignItems = "center";
-            errorDiv.style.justifyContent = "center";
-            errorDiv.textContent = "Imagen no disponible";
-            item.appendChild(errorDiv);
-          };
-
-          // Abrir lightbox al hacer clic
-          img.onclick = function () {
-            openLightbox(index);
-          };
-
-          item.appendChild(img);
-          gallery.appendChild(item);
-        });
-      }
-
-      // Agregar mensaje si no se cargaron imágenes
-      if (gallery.children.length === 0) {
-        const message = document.createElement("p");
-        message.textContent =
-          "No se pudieron cargar las imágenes. Por favor, verifica la conexión o inténtalo más tarde.";
-        message.style.textAlign = "center";
-        message.style.padding = "20px";
-        gallery.appendChild(message);
-      }
-
-      // Funciones del lightbox
-      function openLightbox(index) {
-        const lightbox = document.getElementById("lightbox");
-        const lightboxImage = document.getElementById("lightbox-image");
-        const lightboxCaption = document.getElementById("lightbox-caption");
-
-        currentImageIndex = index;
-        lightboxImage.src = images[index].src;
-        lightboxCaption.textContent = images[index].alt;
-        lightbox.style.display = "block";
-
-        // Evitar scroll en el body
-        document.body.style.overflow = "hidden";
-      }
-
-      function closeLightbox() {
-        document.getElementById("lightbox").style.display = "none";
-        document.body.style.overflow = "auto";
-      }
-
-      function changeImage(direction) {
-        currentImageIndex += direction;
-
-        // Navegación circular
-        if (currentImageIndex >= images.length) {
-          currentImageIndex = 0;
-        } else if (currentImageIndex < 0) {
-          currentImageIndex = images.length - 1;
-        }
-
-        const lightboxImage = document.getElementById("lightbox-image");
-        const lightboxCaption = document.getElementById("lightbox-caption");
-
-        lightboxImage.src = images[currentImageIndex].src;
-        lightboxCaption.textContent = images[currentImageIndex].alt;
-      }
-
-      // Cerrar lightbox con Escape
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") {
-          closeLightbox();
-        }
-      });
-
-      // Añade esta función al final del script
-      function checkImagesExist() {
-        console.log("Verificando imágenes...");
-        let foundCount = 0;
-        let missingCount = 0;
-
-        const imageNames = [
-          "IMG-20250506-WA0819.jpg",
-          "IMG-20250506-WA0820.jpg",
-          "IMG-20250506-WA0821.jpg",
-          "IMG-20250506-WA0822.jpg",
-          "IMG-20250506-WA0823.jpg",
-          "IMG-20250506-WA0824.jpg",
-          "IMG-20250506-WA0825.jpg",
-          "IMG-20250506-WA0826.jpg",
-          "IMG-20250506-WA0827.jpg",
-          "IMG-20250506-WA0828.jpg",
-          "IMG-20250506-WA0829.jpg",
-          "IMG-20250506-WA0830.jpg",
-          "IMG-20250506-WA0831.jpg",
-          "IMG-20250506-WA0832.jpg",
-          "IMG-20250506-WA0833.jpg",
-          "IMG-20250506-WA0834.jpg",
-          "IMG-20250506-WA0835.jpg",
-          "IMG-20250506-WA0836.jpg",
-          "IMG-20250506-WA0837.jpg",
-          "IMG-20250506-WA0838.jpg",
-          "IMG-20250506-WA0839.jpg",
-          "IMG-20250506-WA0840.jpg",
-          "IMG-20250506-WA0841.jpg",
-          "IMG-20250506-WA0842.jpg",
-          "IMG-20250506-WA0843.jpg",
-          "IMG-20250506-WA0844.jpg",
-          "IMG-20250506-WA0845.jpg",
-          "IMG-20250506-WA0846.jpg",
-          "IMG-20250506-WA0847.jpg",
-          "IMG-20250506-WA0848.jpg",
-          "IMG-20250506-WA0849.jpg",
-          "IMG-20250506-WA0850.jpg",
-          "IMG-20250506-WA0851.jpg",
-          "IMG-20250506-WA0852.jpg",
-          "IMG-20250506-WA0853.jpg",
-          "IMG-20250506-WA0854.jpg",
-          "IMG-20250506-WA0855.jpg",
-          "IMG-20250506-WA0856.jpg",
-        ];
-
-        imageNames.forEach((name) => {
-          const img = new Image();
-          img.src = `imgs/${name}`;
-          img.onload = function () {
-            console.log(`✅ Imagen encontrada: ${name}`);
-            foundCount++;
-            console.log(
-              `Encontradas: ${foundCount}, Faltantes: ${missingCount}`
-            );
-          };
-          img.onerror = function () {
-            console.log(`❌ Imagen NO encontrada: ${name}`);
-            missingCount++;
-            console.log(
-              `Encontradas: ${foundCount}, Faltantes: ${missingCount}`
-            );
-          };
-        });
-      }
-
-      // Ejecutar verificación después de cargar la página
-      setTimeout(checkImagesExist, 2000);
     </script>
   </body>
 </html>
