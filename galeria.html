@@ -114,18 +114,21 @@
   </head>
   <body>
     <nav class="navbar">
-      <div class="logo">
-        <a href="index.html">Ecosistemas terrestres en Cuba</a>
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Ecosistemas terrestres en Cuba</a>
+        <button id="navToggle" class="nav-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul id="navMenu" class="nav-menu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="capitulo1.html">Capítulo 1</a></li>
+          <li><a href="capitulo2.html">Capítulo 2</a></li>
+          <li><a href="capitulo3.html">Capítulo 3</a></li>
+          <li><a href="capitulo4.html">Capítulo 4</a></li>
+          <li><a href="capitulo5.html">Capítulo 5</a></li>
+          <li><a href="galeria.html" class="active">Galería</a></li>
+        </ul>
       </div>
-      <button id="navToggle" class="nav-toggle">
-        <i class="fas fa-bars"></i>
-      </button>
-      <ul id="navMenu" class="nav-menu">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="capitulos.html">Capítulos</a></li>
-        <li><a href="galeria.html" class="active">Galería</a></li>
-        <li><a href="about.html">Acerca de</a></li>
-      </ul>
     </nav>
 
     <div class="container">
@@ -179,8 +182,10 @@
         // Crear array con las rutas de las imágenes
         images = [];
         for (let i = 819; i <= 856; i++) {
+          // Corregimos el formato del número para que coincida exactamente con tus archivos
+          let imgNum = i;
           images.push({
-            src: `imgs/IMG-20250506-WA0${i}.jpg`,
+            src: `imgs/IMG-20250506-WA${imgNum}.jpg`,
             alt: `Ecosistema terrestre ${i - 818}`,
           });
         }
@@ -197,8 +202,18 @@
           // Manejar errores de carga
           img.onerror = function () {
             this.onerror = null;
-            this.src = "imgs/placeholder.jpg"; // Imagen de reemplazo
             console.log(`No se pudo cargar: ${image.src}`);
+            // En lugar de usar una imagen de reemplazo, creamos un div con texto
+            this.style.display = "none";
+            const errorDiv = document.createElement("div");
+            errorDiv.style.width = "100%";
+            errorDiv.style.height = "200px";
+            errorDiv.style.backgroundColor = "#f0f0f0";
+            errorDiv.style.display = "flex";
+            errorDiv.style.alignItems = "center";
+            errorDiv.style.justifyContent = "center";
+            errorDiv.textContent = "Imagen no disponible";
+            item.appendChild(errorDiv);
           };
 
           // Abrir lightbox al hacer clic
@@ -209,6 +224,16 @@
           item.appendChild(img);
           gallery.appendChild(item);
         });
+
+        // Agregar mensaje si no se cargaron imágenes
+        if (gallery.children.length === 0) {
+          const message = document.createElement("p");
+          message.textContent =
+            "No se pudieron cargar las imágenes. Por favor, verifica la conexión o inténtalo más tarde.";
+          message.style.textAlign = "center";
+          message.style.padding = "20px";
+          gallery.appendChild(message);
+        }
       }
 
       // Funciones del lightbox
@@ -254,6 +279,24 @@
           closeLightbox();
         }
       });
+
+      // Añade esta función al final del script
+      function checkImagesExist() {
+        console.log("Verificando imágenes...");
+        for (let i = 819; i <= 856; i++) {
+          const img = new Image();
+          img.src = `imgs/IMG-20250506-WA${i}.jpg`;
+          img.onload = function () {
+            console.log(`✅ Imagen encontrada: IMG-20250506-WA${i}.jpg`);
+          };
+          img.onerror = function () {
+            console.log(`❌ Imagen NO encontrada: IMG-20250506-WA${i}.jpg`);
+          };
+        }
+      }
+
+      // Ejecutar verificación después de cargar la página
+      setTimeout(checkImagesExist, 2000);
     </script>
   </body>
 </html>
