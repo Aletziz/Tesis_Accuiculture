@@ -2,8 +2,10 @@ services:
   - type: web
     name: tesis-accuiculture
     env: node
-    buildCommand: npm install
+    buildCommand: npm install && node clear-cache.js
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
+      - key: CACHE_VERSION
+        value: "1"
