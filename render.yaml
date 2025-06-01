@@ -9,5 +9,7 @@ services:
         value: production
       - key: PORT
         value: 10000
+      - key: DATABASE_URL
+        value: postgresql://ecosistemasterrestres_user:f7cC522MAz9iVRZ8cMurrcbrtzJotSAA@dpg-d0ue34adbo4c73av20f0-a/ecosistemasterrestres
     healthCheckPath: /
     autoDeploy: true
