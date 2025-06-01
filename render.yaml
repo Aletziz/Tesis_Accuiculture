@@ -2,10 +2,12 @@ services:
   - type: web
     name: tesis-accuiculture
     env: node
-    buildCommand: npm install && node clear-cache.js
+    buildCommand: npm install
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
-      - key: CACHE_VERSION
-        value: "1"
+      - key: PORT
+        value: 10000
+    healthCheckPath: /
+    autoDeploy: true
