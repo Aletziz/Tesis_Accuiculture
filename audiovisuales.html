@@ -3,18 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Audiovisuales - Tesis Acuicultura</title>
+    <title>Audiovisuales - Ecosistemas Terrestres en Cuba</title>
     <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <style>
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+      }
+
+      .video-item {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+
+      .video-item:hover {
+        transform: translateY(-5px);
+      }
+
+      .video-item h3 {
+        padding: 1rem;
+        margin: 0;
+        background: #2c3e50;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      .video-container {
+        position: relative;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        background: #000;
+      }
+
+      .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .video-description {
+        padding: 1rem;
+        background: #f8f9fa;
+      }
+
+      .video-description p {
+        margin: 0;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .video-meta {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: #e9ecef;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .video-meta i {
+        margin-right: 0.5rem;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .section-header h1 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .section-header p {
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      @media (max-width: 768px) {
+        .video-grid {
+          grid-template-columns: 1fr;
+          padding: 1rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.html" class="nav-logo">Tesis Acuicultura</a>
+        <a href="index.html" class="nav-logo">Ecosistemas terrestres en Cuba</a>
         <button class="nav-toggle" id="navToggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -30,7 +120,10 @@
 
     <div class="container">
       <div class="content-box">
-        <h1>Audiovisuales</h1>
+        <div class="section-header">
+          <h1>Audiovisuales</h1>
+          <p>Explora nuestra colección de videos sobre los diferentes ecosistemas terrestres de Cuba</p>
+        </div>
 
         <div class="video-grid">
           <div class="video-item">
@@ -41,9 +134,13 @@
                 Tu navegador no soporta el elemento de video.
               </video>
             </div>
-            <p>
-              Video sobre el ecosistema del bosque caducifolio y su importancia en la biodiversidad.
-            </p>
+            <div class="video-description">
+              <p>Descubre la belleza y la importancia del bosque caducifolio cubano, un ecosistema único que alberga una rica biodiversidad y juega un papel crucial en la conservación de especies endémicas.</p>
+            </div>
+            <div class="video-meta">
+              <i class="fas fa-clock"></i>
+              <span>Duración: 5:30</span>
+            </div>
           </div>
 
           <div class="video-item">
@@ -54,7 +151,13 @@
                 Tu navegador no soporta el elemento de video.
               </video>
             </div>
-            <p>Video sobre el ecosistema de la sabana y sus características principales.</p>
+            <div class="video-description">
+              <p>Explora las vastas sabanas cubanas, un ecosistema caracterizado por sus extensas praderas y su importancia en el mantenimiento de la biodiversidad y los ciclos naturales.</p>
+            </div>
+            <div class="video-meta">
+              <i class="fas fa-clock"></i>
+              <span>Duración: 4:45</span>
+            </div>
           </div>
         </div>
       </div>
