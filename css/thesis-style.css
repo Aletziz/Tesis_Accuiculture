@@ -1,476 +1,462 @@
 /* Variables de color basadas en la imagen */
 :root {
-    --primary-color: #1a2f38;    /* Azul marino oscuro de fondo */
-    --secondary-color: #40b5bc;  /* Turquesa de los tanques */
-    --accent-color: #9eca66;     /* Verde lima de las plantas */
-    --dark-accent: #153740;      /* Azul oscuro para sombras */
-    --light-accent: #e0f2f1;     /* Turquesa claro para highlights */
-    --text-color: #2d3436;
-    --white: #ffffff;
-    --transition-speed: 0.3s;
+  --primary-color: #1a2f38; /* Azul marino oscuro de fondo */
+  --secondary-color: #40b5bc; /* Turquesa de los tanques */
+  --accent-color: #9eca66; /* Verde lima de las plantas */
+  --dark-accent: #153740; /* Azul oscuro para sombras */
+  --light-accent: #e0f2f1; /* Turquesa claro para highlights */
+  --text-color: #2d3436;
+  --white: #ffffff;
+  --transition-speed: 0.3s;
 }
 
 body {
-    font-family: 'Inter', 'Helvetica Neue', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--primary-color);
-    background-image: url('../Leonardo_Phoenix_10_Estilo_tcnico_y_minimalista_similar_a_las_2.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  background-image: url("../Leonardo_Phoenix_10_Estilo_tcnico_y_minimalista_similar_a_las_2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
 /* Overlay para mejorar la legibilidad */
 body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(26, 47, 56, 0.97) 0%,
-        rgba(26, 47, 56, 0.85) 100%
-    );
-    z-index: -1;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 47, 56, 0.97) 0%,
+    rgba(26, 47, 56, 0.85) 100%
+  );
+  z-index: -1;
 }
 
 /* Estilos para la barra de navegación */
 .navbar {
-    background-color: rgba(21, 55, 64, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 2rem;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
+  background-color: rgba(21, 55, 64, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-logo {
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-    transition: color var(--transition-speed);
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: color var(--transition-speed);
 }
 
 .nav-logo:hover {
-    color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 .nav-menu {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-menu li {
-    margin-left: 2rem;
+  margin-left: 2rem;
 }
 
 .nav-menu a {
-    color: var(--light-accent);
-    text-decoration: none;
-    font-size: 1rem;
-    transition: all var(--transition-speed);
-    position: relative;
-    padding: 0.5rem 0;
+  color: var(--light-accent);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all var(--transition-speed);
+  position: relative;
+  padding: 0.5rem 0;
 }
 
 .nav-menu a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--secondary-color);
-    transition: width var(--transition-speed);
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--secondary-color);
+  transition: width var(--transition-speed);
 }
 
 .nav-menu a:hover {
-    color: var(--secondary-color);
+  color: var(--secondary-color);
 }
 
 .nav-menu a:hover::after {
-    width: 100%;
+  width: 100%;
 }
 
 /* Contenedor principal */
 .container {
-    max-width: 1200px;
-    margin: 100px auto 0;
-    padding: 2rem;
-    position: relative;
-    z-index: 1;
+  max-width: 1200px;
+  margin: 100px auto 0;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* Caja de contenido */
 .content-box {
-    background: rgba(26, 47, 56, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(26, 47, 56, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .content-box h1 {
-    color: var(--secondary-color);
-    font-size: 2.5rem;
-    margin: 1rem 0 2rem;
-    text-align: center;
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: 1rem;
-    font-weight: 300;
-    letter-spacing: 1px;
+  color: var(--secondary-color);
+  font-size: 2.5rem;
+  margin: 1rem 0 2rem;
+  text-align: center;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 1rem;
+  font-weight: 300;
+  letter-spacing: 1px;
 }
 
 /* Estilos para las secciones */
 .sections-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
 .section-button {
-    text-decoration: none;
-    color: inherit;
-    transition: transform var(--transition-speed);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--transition-speed);
 }
 
 .section {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 12px;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    transition: all var(--transition-speed);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-speed);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .section:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(64, 181, 188, 0.3);
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(64, 181, 188, 0.3);
 }
 
 .section h3 {
-    color: var(--secondary-color);
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: 0.5rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
 }
 
 .section p {
-    color: var(--light-accent);
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
+  color: var(--light-accent);
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 /* Botones de navegación */
 .navigation-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-button {
-    padding: 0.8rem 1.5rem;
-    background-color: rgba(64, 181, 188, 0.2);
-    color: var(--secondary-color);
-    text-decoration: none;
-    border-radius: 8px;
-    border: 1px solid var(--secondary-color);
-    transition: all var(--transition-speed);
-    backdrop-filter: blur(4px);
+  padding: 0.8rem 1.5rem;
+  background-color: rgba(64, 181, 188, 0.2);
+  color: var(--secondary-color);
+  text-decoration: none;
+  border-radius: 8px;
+  border: 1px solid var(--secondary-color);
+  transition: all var(--transition-speed);
+  backdrop-filter: blur(4px);
 }
 
 .nav-button:hover {
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(64, 181, 188, 0.3);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(64, 181, 188, 0.3);
 }
 
 /* Contenido editable */
 .editable-content {
-    background: transparent;
-    padding: 0.5rem;
-    border: 1px solid transparent;
-    transition: all var(--transition-speed);
-    color: var(--light-accent);
+  background: transparent;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  transition: all var(--transition-speed);
+  color: var(--light-accent);
 }
 
 .editable-content:focus {
-    outline: none;
-    background: rgba(64, 181, 188, 0.1);
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 15px rgba(64, 181, 188, 0.2);
+  outline: none;
+  background: rgba(64, 181, 188, 0.1);
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 15px rgba(64, 181, 188, 0.2);
 }
 
 /* Animaciones */
 @keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(20px);
-        backdrop-filter: blur(0);
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0);
-        backdrop-filter: blur(12px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    backdrop-filter: blur(12px);
+  }
 }
 
 .section {
-    animation: fadeIn 0.5s ease-out forwards;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .nav-container {
-        flex-direction: column;
-    }
+  .nav-container {
+    flex-direction: column;
+  }
 
-    .nav-menu {
-        margin-top: 1rem;
-        flex-direction: column;
-        align-items: center;
-        background: rgba(21, 55, 64, 0.98);
-        padding: 1rem;
-        border-radius: 8px;
-    }
+  .nav-menu {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(21, 55, 64, 0.98);
+    padding: 1rem;
+    border-radius: 8px;
+  }
 
-    .nav-menu li {
-        margin: 0.5rem 0;
-    }
+  .nav-menu li {
+    margin: 0.5rem 0;
+  }
 
-    .sections-container {
-        grid-template-columns: 1fr;
-    }
+  .sections-container {
+    grid-template-columns: 1fr;
+  }
 
-    h1.editable-content {
-        font-size: 2rem;
-    }
+  h1.editable-content {
+    font-size: 2rem;
+  }
 }
 
 /* Estilos para el botón de menú móvil */
 .nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--secondary-color);
-    font-size: 1.5rem;
-    cursor: pointer;
+  display: none;
+  background: none;
+  border: none;
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
-    .nav-toggle {
-        display: block;
-    }
+  .nav-toggle {
+    display: block;
+  }
 
-    .nav-menu {
-        display: none;
-    }
+  .nav-menu {
+    display: none;
+  }
 
-    .nav-menu.active {
-        display: flex;
-    }
+  .nav-menu.active {
+    display: flex;
+  }
 }
 
 /* Estilos para el contenido de las subsecciones */
 .content-section {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 12px;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    margin: 2rem 0;
-    animation: fadeIn 0.5s ease-out forwards;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 2rem 0;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 .content-section p {
-    color: var(--light-accent);
-    margin: 1rem 0;
-    font-size: 1rem;
-    line-height: 1.8;
-}
-
-.content-section h2 {
-    color: var(--secondary-color);
-    margin: 2rem 0 1rem;
-    font-size: 1.5rem;
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: 0.5rem;
-}
-
-.content-section ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin: 1rem 0;
+  color: var(--white);
+  margin: 1rem 0;
+  font-size: 1rem;
+  line-height: 1.8;
 }
 
 .content-section ul li {
-    color: var(--light-accent);
-    margin: 0.8rem 0;
-    padding-left: 1.5rem;
-    position: relative;
-    line-height: 1.6;
+  color: var(--white);
+  margin: 0.8rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
 }
 
 .content-section ul li::before {
-    content: "•";
-    color: var(--secondary-color);
-    position: absolute;
-    left: 0;
-    font-size: 1.2em;
+  content: "•";
+  color: var(--secondary-color);
+  position: absolute;
+  left: 0;
+  font-size: 1.2em;
 }
 
 /* Estilos para el enlace de volver */
 .back-link {
-    display: inline-block;
-    color: var(--secondary-color);
-    text-decoration: none;
-    margin: 1rem 0 2rem;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: all var(--transition-speed);
-    border: 1px solid transparent;
+  display: inline-block;
+  color: var(--secondary-color);
+  text-decoration: none;
+  margin: 1rem 0 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all var(--transition-speed);
+  border: 1px solid transparent;
 }
 
 .back-link:hover {
-    color: var(--accent-color);
-    transform: translateX(-5px);
-    border-color: var(--accent-color);
-    background: rgba(158, 202, 102, 0.1);
+  color: var(--accent-color);
+  transform: translateX(-5px);
+  border-color: var(--accent-color);
+  background: rgba(158, 202, 102, 0.1);
 }
 
 .chapter-text {
-    color: #ffffff;
-    line-height: 1.6;
-    margin: 20px 0;
+  color: #ffffff;
+  line-height: 1.6;
+  margin: 20px 0;
 }
 
 .chapter-text p {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .chapter-text ul {
-    color: #ffffff;
-    margin: 15px 0;
-    padding-left: 20px;
+  color: #ffffff;
+  margin: 15px 0;
+  padding-left: 20px;
 }
 
 .chapter-text ul li {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 /* Estilos específicos para el Capítulo 6 */
 .capitulo6 .section-button {
-    text-decoration: none !important;
-    color: inherit !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 .capitulo6 .section {
-    pointer-events: auto !important;
-    cursor: pointer !important;
-    user-select: none !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  user-select: none !important;
 }
 
 .capitulo6 .section h3,
 .capitulo6 .section p {
-    pointer-events: none !important;
-    user-select: none !important;
+  pointer-events: none !important;
+  user-select: none !important;
 }
 
 /* Estilos para modo no-admin */
 .capitulo6:not(.admin-mode) [contenteditable="true"],
 .capitulo6:not(.admin-mode) [contenteditable="false"],
 .capitulo6:not(.admin-mode) .editable-content {
-    pointer-events: none !important;
-    user-select: none !important;
-    cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  cursor: default !important;
 }
 
 .capitulo6 a {
-    pointer-events: auto !important;
-    cursor: pointer !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 .capitulo6 .nav-button {
-    pointer-events: auto !important;
-    cursor: pointer !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* Forzar modo no-editable solo cuando no es admin */
 .no-edit-mode * {
-    pointer-events: none !important;
-    user-select: none !important;
-    cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  cursor: default !important;
 }
 
 .no-edit-mode a,
 .no-edit-mode button,
 .no-edit-mode .nav-button,
 .no-edit-mode .section-button {
-    pointer-events: auto !important;
-    cursor: pointer !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* Estilos para modo admin */
 .admin-mode .section {
-    cursor: text !important;
-    pointer-events: auto !important;
+  cursor: text !important;
+  pointer-events: auto !important;
 }
 
 .admin-mode .section h3,
 .admin-mode .section p {
-    cursor: text !important;
-    pointer-events: auto !important;
-    user-select: text !important;
+  cursor: text !important;
+  pointer-events: auto !important;
+  user-select: text !important;
 }
 
 .admin-mode .editable-content {
-    cursor: text !important;
-    pointer-events: auto !important;
-    user-select: text !important;
-    border: 1px solid transparent;
-    transition: border-color 0.3s ease;
+  cursor: text !important;
+  pointer-events: auto !important;
+  user-select: text !important;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
 }
 
 .admin-mode .editable-content:hover {
-    border-color: var(--secondary-color);
+  border-color: var(--secondary-color);
 }
 
 .admin-mode .editable-content:focus {
-    border-color: var(--secondary-color);
-    outline: none;
-} 
+  border-color: var(--secondary-color);
+  outline: none;
+}
