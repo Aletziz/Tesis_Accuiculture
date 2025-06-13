@@ -460,3 +460,38 @@ body::before {
   border-color: var(--secondary-color);
   outline: none;
 }
+
+/* Estilos para modo de edición */
+[contenteditable="true"] {
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+[contenteditable="true"]:hover {
+  border-color: var(--secondary-color);
+}
+
+/* Asegurar que los botones y enlaces sean clickeables incluso en modo edición */
+.nav-button,
+.back-link,
+.section-button,
+a,
+button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+/* Asegurar que los elementos editables no interfieran con la navegación */
+.editable-content {
+  pointer-events: auto !important;
+  cursor: text !important;
+}
+
+/* Asegurar que los contenedores de navegación sean clickeables */
+.navigation-buttons,
+.nav-container,
+.nav-menu {
+  pointer-events: auto !important;
+  user-select: none !important;
+}

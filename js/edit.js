@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
       ".section-description",
 
       // Introduction page
-      ".introduction-text",
       ".intro-content",
       ".intro-title",
 
@@ -45,7 +44,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (
           !element.closest(".edit-controls") &&
           !element.closest(".editable-wrapper") &&
-          !element.closest("nav")
+          !element.closest("nav") &&
+          !element.closest(".navigation-buttons") &&
+          !element.closest(".back-link")
         ) {
           makeEditable(element);
         }
@@ -57,60 +58,25 @@ document.addEventListener("DOMContentLoaded", function () {
     adminIndicator.className = "admin-mode-indicator";
     adminIndicator.innerHTML = '<i class="fas fa-edit"></i> Modo Edición';
     document.body.appendChild(adminIndicator);
+
+    // Asegurar que los botones y enlaces funcionen correctamente
+    document.querySelectorAll('.nav-button, .back-link, .section-button, a, button').forEach(element => {
+      element.style.pointerEvents = 'auto';
+      element.style.cursor = 'pointer';
+    });
   }
 });
 
 function makeEditable(element) {
-  if (
-    element.closest(".editable-wrapper") ||
-    element.querySelector(".edit-controls")
-  ) {
-    return;
-  }
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "editable-wrapper";
-
-  const editButton = document.createElement("button");
-  editButton.className = "edit-button";
-  editButton.innerHTML = '<i class="fas fa-edit"></i> Editar';
-
-  let isEditing = false;
-
-  editButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (!isEditing) {
-      element.contentEditable = true;
-      element.classList.add("editing");
-      editButton.innerHTML = '<i class="fas fa-save"></i> Guardar';
-      isEditing = true;
-    } else {
-      element.contentEditable = false;
-      element.classList.remove("editing");
-      editButton.innerHTML = '<i class="fas fa-edit"></i> Editar';
-      isEditing = false;
-
-      // Save to localStorage with page identifier
-      const pageId = window.location.pathname.replace(/\//g, "_");
-      const contentId = `${pageId}_${element.className}_${Date.now()}`;
-      const savedContent = JSON.parse(localStorage.getItem("content") || "{}");
-      savedContent[contentId] = element.innerHTML;
-      localStorage.setItem("content", JSON.stringify(savedContent));
-
-      showSaveToast();
+  element.contentEditable = true;
+  element.classList.add('editable-content');
+  
+  // Prevenir que la edición interfiera con los clicks en enlaces y botones
+  element.addEventListener('click', function(e) {
+    if (e.target.closest('a') || e.target.closest('button')) {
+      e.stopPropagation();
     }
   });
-
-  const controls = document.createElement("div");
-  controls.className = "edit-controls";
-  controls.appendChild(editButton);
-
-  element.classList.add("editable-content");
-  element.parentNode.insertBefore(wrapper, element);
-  wrapper.appendChild(controls);
-  wrapper.appendChild(element);
 }
 
 function showSaveToast() {
