@@ -465,10 +465,25 @@ body::before {
 [contenteditable="true"] {
   border: 1px solid transparent;
   transition: border-color 0.3s ease;
+  color: white !important;
 }
 
 [contenteditable="true"]:hover {
   border-color: var(--secondary-color);
+}
+
+[contenteditable="true"]:focus {
+  outline: none;
+  color: white !important;
+}
+
+/* Asegurar que el texto editable mantenga el color blanco */
+.editable-content {
+  color: white !important;
+}
+
+.editable-content:focus {
+  color: white !important;
 }
 
 /* Asegurar que los botones y enlaces sean clickeables incluso en modo edición */
