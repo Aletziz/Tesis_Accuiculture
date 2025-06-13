@@ -155,7 +155,7 @@
 
       // Verificar si es administrador
       document.addEventListener("DOMContentLoaded", function () {
-        const isAdmin = localStorage.getItem("isAdmin") === "true";
+        const isAdmin = localStorage.getItem("adminToken") === "true";
 
         if (isAdmin) {
           const nav = document.querySelector(".nav-menu");
@@ -163,7 +163,7 @@
           logoutBtn.innerHTML = '<a href="#" onclick="logout()">Cerrar Sesión</a>';
           nav.appendChild(logoutBtn);
 
-          document.querySelectorAll(".chapter-text").forEach((element) => {
+          document.querySelectorAll(".chapter-text, .content-section, .editable-content").forEach((element) => {
             const editBtn = document.createElement("button");
             editBtn.className = "edit-button";
             editBtn.innerHTML = "Editar";
@@ -186,7 +186,7 @@
       }
 
       function logout() {
-        localStorage.removeItem("isAdmin");
+        localStorage.removeItem("adminToken");
         window.location.reload();
       }
 

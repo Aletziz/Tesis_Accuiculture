@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('[contenteditable="true"]').forEach(element => {
       element.contentEditable = false;
       element.classList.remove('editable-content');
+      element.style.border = 'none';
     });
     return;
   }
@@ -82,6 +83,7 @@ function makeEditable(element) {
   if (!isAdmin) {
     element.contentEditable = false;
     element.classList.remove('editable-content');
+    element.style.border = 'none';
     return;
   }
 
@@ -103,6 +105,7 @@ function handleLogout() {
   document.querySelectorAll('[contenteditable="true"]').forEach(element => {
     element.contentEditable = false;
     element.classList.remove('editable-content');
+    element.style.border = 'none';
   });
   // Remover indicador de modo admin
   const adminIndicator = document.querySelector('.admin-mode-indicator');
@@ -112,6 +115,18 @@ function handleLogout() {
   // Redirigir a la página de inicio
   window.location.href = 'index.html';
 }
+
+// Verificar permisos cada vez que se carga la página
+window.addEventListener('load', function() {
+  const isAdmin = localStorage.getItem("adminToken") === "true";
+  if (!isAdmin) {
+    document.querySelectorAll('[contenteditable="true"]').forEach(element => {
+      element.contentEditable = false;
+      element.classList.remove('editable-content');
+      element.style.border = 'none';
+    });
+  }
+});
 
 function showSaveToast() {
   const toast = document.createElement("div");

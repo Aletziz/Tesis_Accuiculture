@@ -92,11 +92,11 @@
 
       // Verificar si es administrador y habilitar edición
       document.addEventListener("DOMContentLoaded", function () {
-        const isAdmin = localStorage.getItem("isAdmin") === "true";
+        const isAdmin = localStorage.getItem("adminToken") === "true";
 
         if (isAdmin) {
           // Habilitar edición solo para elementos con clase editable-content
-          document.querySelectorAll(".editable-content").forEach((element) => {
+          document.querySelectorAll(".editable-content, .chapter-text, .content-section").forEach((element) => {
             const editBtn = document.createElement("button");
             editBtn.className = "edit-button";
             editBtn.innerHTML = "Editar";
