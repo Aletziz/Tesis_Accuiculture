@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // Verificar si estamos en el Capítulo 6
   const isChapter6 = window.location.pathname.includes('capitulo6.html');
   
+  // Remover modo de edición si no es admin
+  if (!isAdmin) {
+    document.querySelectorAll('[contenteditable="true"]').forEach(element => {
+      element.contentEditable = false;
+      element.classList.remove('editable-content');
+    });
+    return;
+  }
+  
   if (isAdmin && !isChapter6) {  // Solo agregar funcionalidad de edición si no es Capítulo 6
     // Add edit functionality to all content areas
     const editableSelectors = [
@@ -67,7 +76,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// Función para hacer elementos editables
 function makeEditable(element) {
+  const isAdmin = localStorage.getItem("adminToken") === "true";
+  if (!isAdmin) {
+    element.contentEditable = false;
+    element.classList.remove('editable-content');
+    return;
+  }
+
   element.contentEditable = true;
   element.classList.add('editable-content');
   
@@ -77,6 +94,23 @@ function makeEditable(element) {
       e.stopPropagation();
     }
   });
+}
+
+// Función para manejar el cierre de sesión
+function handleLogout() {
+  localStorage.removeItem("adminToken");
+  // Remover modo de edición de todos los elementos
+  document.querySelectorAll('[contenteditable="true"]').forEach(element => {
+    element.contentEditable = false;
+    element.classList.remove('editable-content');
+  });
+  // Remover indicador de modo admin
+  const adminIndicator = document.querySelector('.admin-mode-indicator');
+  if (adminIndicator) {
+    adminIndicator.remove();
+  }
+  // Redirigir a la página de inicio
+  window.location.href = 'index.html';
 }
 
 function showSaveToast() {

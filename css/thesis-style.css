@@ -398,12 +398,12 @@ body::before {
 }
 
 /* Estilos para modo no-admin */
-.capitulo6:not(.admin-mode) [contenteditable="true"],
-.capitulo6:not(.admin-mode) [contenteditable="false"],
-.capitulo6:not(.admin-mode) .editable-content {
+body:not(.admin-mode) [contenteditable="true"],
+body:not(.admin-mode) .editable-content {
   pointer-events: none !important;
   user-select: none !important;
   cursor: default !important;
+  border: none !important;
 }
 
 .capitulo6 a {
