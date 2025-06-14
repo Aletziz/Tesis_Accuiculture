@@ -223,7 +223,7 @@ body::before {
   padding: 0.5rem;
   border: 1px solid transparent;
   transition: all var(--transition-speed);
-  color: var(--light-accent);
+  color: var(--white) !important;
 }
 
 .editable-content:focus {
@@ -231,6 +231,12 @@ body::before {
   background: rgba(64, 181, 188, 0.1);
   border-color: var(--secondary-color);
   box-shadow: 0 0 15px rgba(64, 181, 188, 0.2);
+  color: var(--white) !important;
+}
+
+.editable-content:hover {
+  background: rgba(64, 181, 188, 0.05);
+  color: var(--white) !important;
 }
 
 /* Animaciones */
@@ -305,18 +311,20 @@ body::before {
 
 /* Estilos para el contenido de las subsecciones */
 .content-section {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2rem;
-  border-radius: 12px;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   margin: 2rem 0;
-  animation: fadeIn 0.5s ease-out forwards;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: var(--white) !important;
+}
+
+.content-section p,
+.content-section div,
+.content-section .editable-content {
+  color: var(--white) !important;
 }
 
 .content-section p {
-  color: var(--white);
   margin: 1rem 0;
   font-size: 1rem;
   line-height: 1.8;
@@ -465,7 +473,7 @@ body:not(.admin-mode) .editable-content {
 [contenteditable="true"] {
   border: 1px solid transparent;
   transition: border-color 0.3s ease;
-  color: white !important;
+  color: var(--white) !important;
 }
 
 [contenteditable="true"]:hover {
@@ -474,7 +482,7 @@ body:not(.admin-mode) .editable-content {
 
 [contenteditable="true"]:focus {
   outline: none;
-  color: white !important;
+  color: var(--white) !important;
 }
 
 /* Asegurar que el texto editable mantenga el color blanco */
@@ -509,4 +517,17 @@ button {
 .nav-menu {
   pointer-events: auto !important;
   user-select: none !important;
+}
+
+/* Asegurar que el texto sea blanco en todos los estados */
+[contenteditable="true"] {
+  color: var(--white) !important;
+}
+
+[contenteditable="true"]:hover {
+  color: var(--white) !important;
+}
+
+[contenteditable="true"]:focus {
+  color: var(--white) !important;
 }
